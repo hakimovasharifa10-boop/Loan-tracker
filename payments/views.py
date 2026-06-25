@@ -57,3 +57,17 @@ def payment_create(request):
     return render(request, 'payments/payment_form.html', {
         'loans': loans,
     })
+
+@login_required
+def payment_delete(request, pk):
+    payment = Payment.objects.filter(pk=pk, user=request.user).first()
+    if not payment:
+        return redirect('payment_list')
+
+    if request.method == 'POST':
+        payment.delete()
+        return redirect('payment_list')
+
+    return render(request, 'payments/payment_confirm_delete.html', {
+        'payment': payment
+    })
