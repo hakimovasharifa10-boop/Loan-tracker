@@ -57,6 +57,44 @@ def payment_create(request):
     return render(request, 'payments/payment_form.html', {
         'loans': loans,
     })
+    
+    
+@login_required
+def payment_update(request, pk):
+    payment = Payment.objects.filter(pk=pk, user=request.user).first()
+    loans   = Loan.objects.filter(user=request.user)
+
+    if not payment:
+        return redirect('payment_list')
+
+    if request.method == 'POST':
+        loan_id = request.POST.get('loan')
+        amount  = request.POST.get('amount')
+        date    = request.POST.get('date')
+        notes   = request.POST.get('notes')
+
+        if not loan_id or not amount or not date:
+            return render(request, 'payments/payment_form.html', {
+                'error':   'All fields are required!',
+                'payment': payment,
+                'loans':   loans,
+            })
+        loan = Loan.objects.filter(pk=loan_id, user=request.user).first()
+        if not loan:
+            return redirect('payment_list')
+
+        payment.loan   = loan
+        payment.amount = amount
+        payment.date   = date
+        payment.notes  = notes
+        payment.save()
+        return redirect('payment_list')
+
+    return render(request, 'payments/payment_form.html', {
+        'payment': payment,
+        'loans':   loans,
+    })
+    
 
 @login_required
 def payment_delete(request, pk):
