@@ -142,6 +142,19 @@ def loan_update(request, pk):
     return render(request, 'loans/loan_form.html', {'loan': loan})
 
 
+@login_required
+def loan_delete(request, pk):
+    loan = Loan.objects.filter(pk=pk, user=request.user).first()
+    if not loan:
+        return redirect('loan_list')
+
+    if request.method == 'POST':
+        loan.delete()
+        return redirect('loan_list')
+
+    return render(request, 'loans/loan_confirm_delete.html', {'loan': loan})
+
+
     
         
         
