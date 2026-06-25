@@ -72,6 +72,39 @@ Be specific with numbers.'''
         'rates':         rates,
         'today':         today,
     })
+    
+@login_required
+def loan_create(request):
+    if request.method == 'POST':
+        bank_name       = request.POST.get('bank_name')
+        amount          = request.POST.get('amount')
+        interest_rate   = request.POST.get('interest_rate')
+        monthly_payment = request.POST.get('monthly_payment')
+        start_date      = request.POST.get('start_date')
+        end_date        = request.POST.get('end_date')
+        notes           = request.POST.get('notes')
+        logo            = request.FILES.get('logo')
+
+        if not bank_name or not amount or not interest_rate or not monthly_payment or not start_date or not end_date:
+            return render(request, 'loans/loan_form.html', {
+                'error': 'All fields are required!'
+            })
+            
+        Loan.objects.create(
+            user=request.user,
+            bank_name=bank_name,
+            amount=amount,
+            interest_rate=interest_rate,
+            monthly_payment=monthly_payment,
+            start_date=start_date,
+            end_date=end_date,
+            notes=notes,
+            logo=logo
+        )
+        return redirect('loan_list')
+
+    return render(request, 'loans/loan_form.html')
+
 
     
         
