@@ -69,3 +69,20 @@ def confirm_email(request):
         return redirect('login')
 
     return render(request, 'accounts/confirm.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username or not password:
+            return render(request, 'accounts/login.html', {'error': 'All fields are required!'})
+
+        user = authenticate(request, username=username, password=password)
+        if not user:
+            return render(request, 'accounts/login.html', {'error': 'Incorrect login or password!'})
+
+        login(request, user)
+        return redirect('dashboard')
+
+    return render(request, 'accounts/login.html')
