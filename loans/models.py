@@ -15,3 +15,23 @@ class Loan(models.Model):
     end_date       = models.DateField()
     notes          = models.TextField(null=True, blank=True)
     created_at     = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.bank_name} - {self.amount}'
+
+    def paid_amount(self):
+        return sum(p.amount for p in self.payments.all())
+
+    def remaining_amount(self):
+        return self.amount - self.paid_amount()
+
+    def progress_percent(self):
+        if self.amount == 0:
+            return 0
+        return round((self.paid_amount() / self.amount) * 100)
+    
+    def is_overdue(self):
+        return self.end_date < timezone.now().date()
+
+    class Meta:
+        ordering = ['-created_at']
