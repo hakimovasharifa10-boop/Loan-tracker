@@ -22,14 +22,14 @@ def get_exchange_rates():
     
 @login_required
 def dashboard_view(request):
-    loans    = Loan.objects.filter(user=request.user)
+    loans = Loan.objects.filter(user=request.user)
     payments = Payment.objects.filter(user=request.user)
-    today    = timezone.now().date()
+    today = timezone.now().date()
 
     
-    total_debt    = sum(loan.remaining_amount() for loan in loans)
-    total_paid    = sum(p.amount for p in payments)
-    active_loans  = loans.count()
+    total_debt = sum(loan.remaining_amount() for loan in loans)
+    total_paid = sum(p.amount for p in payments)
+    active_loans = loans.count()
     
     overdue_loans = [loan for loan in loans if loan.end_date < today]
 

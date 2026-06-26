@@ -12,7 +12,6 @@ load_dotenv()
 client = Groq(api_key=os.getenv('GROQ_API'))
 
 def get_exchange_rates():
-    # Берём актуальный курс валют
     try:
         response = requests.get('https://api.exchangerate-api.com/v4/latest/TJS', timeout=5)
         data = response.json()
