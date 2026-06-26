@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Payments — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2 class="page-title">Payment History</h2>
+    <a href="/payments/create/" class="btn btn-primary">+ Add Payment</a>
+</div>
+
+<!-- Filter -->
+<div class="card" style="margin-bottom:14px">
+    <form method="get" style="display:flex;gap:10px;align-items:flex-end">
+        <div style="flex:1">
+            <label class="form-label">Filter by bank</label>
+            <select name="loan" class="form-input">
+                <option value="">All banks</option>
+                {% for loan in loans %}
+                    <option value="{{ loan.pk }}"
+                        {% if selected_loan == loan.pk|stringformat:'s' %}selected{% endif %}>
+                        {{ loan.bank_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom:14px;display:flex;gap:8px">
+            <button type="submit" class="btn btn-primary">Apply</button>
+            <a href="/payments/" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+</div>
+
+<!-- Payments table -->
+<div class="card" style="padding:0">
+    {% if payments %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Bank</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px">
+                            {% if payment.loan.logo %}
+                                <img src="{{ payment.loan.logo.url }}"
+                                     style="width:24px;height:24px;border-radius:6px;object-fit:cover">
+                            {% else %}
+                                <div style="width:24px;height:24px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white">
+                                    {{ payment.loan.bank_name|slice:":2"|upper }}
+                                </div>
+                            {% endif %}
+                            <span style="color:#a78bfa;font-weight:500">{{ payment.loan.bank_name }}</span>
+                        </div>
+                    </td>
+                    <td style="color:#34d399;font-weight:600">+{{ payment.amount }} TJS</td>
+                    <td style="color:#64748b">{{ payment.date }}</td>
+                    <td style="color:#475569;font-size:12px">{{ payment.notes|default:"—" }}</td>
+                    <td>
+                        <div style="display:flex;gap:6px">
+                            <a href="/payments/{{ payment.pk }}/edit/" class="btn btn-secondary btn-sm">✏</a>
+                            <form method="post" action="/payments/{{ payment.pk }}/delete/" style="display:inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this payment?')">🗑</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Total -->
+        <div style="display:flex;justify-content:flex-end;padding:14px 16px;border-top:1px solid rgba(255,255,255,0.04)">
+            <div style="font-size:14px;color:#64748b">
+                Total paid:
+                <span style="color:#34d399;font-weight:700;margin-left:8px">{{ total }} TJS</span>
+            </div>
+        </div>
+
+    {% else %}
+        <div style="text-align:center;padding:40px">
+            <div style="font-size:48px;margin-bottom:16px">💳</div>
+            <h3 style="color:#e2e8f0;margin-bottom:8px">No payments yet</h3>
+            <p style="color:#475569;font-size:13px;margin-bottom:20px">
+                Start tracking your loan payments
+            </p>
+            <a href="/payments/create/" class="btn btn-primary">+ Add First Payment</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

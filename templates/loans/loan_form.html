@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}{% if loan %}Edit Loan{% else %}Add Loan{% endif %} — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2 class="page-title">{% if loan %}✏ Edit Loan{% else %}+ Add New Loan{% endif %}</h2>
+    <a href="/loans/" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="card" style="max-width:600px;margin:0 auto">
+
+    {% if error %}
+        <div class="alert-error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Bank Name</label>
+                <input type="text" name="bank_name" class="form-input"
+                       placeholder="e.g. Amonatbank"
+                       value="{{ loan.bank_name }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bank Logo</label>
+                {% if loan.logo %}
+                    <div style="margin-bottom:8px">
+                        <img src="{{ loan.logo.url }}"
+                             style="width:40px;height:40px;border-radius:8px;object-fit:cover">
+                    </div>
+                {% endif %}
+                <input type="file" name="logo" class="form-input"
+                       accept="image/*" style="padding:6px">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Loan Amount (TJS)</label>
+                <input type="number" name="amount" class="form-input"
+                       placeholder="25000" step="0.01"
+                       value="{{ loan.amount }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Interest Rate (%)</label>
+                <input type="number" name="interest_rate" class="form-input"
+                       placeholder="18" step="0.1"
+                       value="{{ loan.interest_rate }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Monthly Payment (TJS)</label>
+                <input type="number" name="monthly_payment" class="form-input"
+                       placeholder="1500" step="0.01"
+                       value="{{ loan.monthly_payment }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Start Date</label>
+                <input type="date" name="start_date" class="form-input"
+                       value="{{ loan.start_date|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">End Date</label>
+                <input type="date" name="end_date" class="form-input"
+                       value="{{ loan.end_date|date:'Y-m-d' }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Notes (optional)</label>
+            <input type="text" name="notes" class="form-input"
+                   placeholder="Any notes about this loan..."
+                   value="{{ loan.notes }}">
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:8px">
+            <button type="submit" class="btn btn-primary">
+                {% if loan %}Save Changes{% else %}Add Loan{% endif %}
+            </button>
+            <a href="/loans/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

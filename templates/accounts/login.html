@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Login — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+<div style="display:flex;align-items:center;justify-content:center;min-height:70vh">
+    <div class="card" style="max-width:420px;width:100%">
+
+        <div style="text-align:center;margin-bottom:24px">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px">🏦</div>
+            <h2 style="color:#e2e8f0;font-size:20px;font-weight:700;margin-bottom:4px" data-t="login_title">Welcome back 👋</h2>
+            <p style="color:#475569;font-size:13px" data-t="login_sub">Login with username or email</p>
+        </div>
+
+        {% if error %}
+            <div class="alert-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" data-t="label_username_email">Username or Email</label>
+                <input type="text" name="username" class="form-input"
+                       placeholder="Enter username or email">
+            </div>
+            <div class="form-group">
+                <label class="form-label" data-t="label_password">Password</label>
+                <input type="password" name="password" class="form-input"
+                       placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:4px" data-t="btn_login">
+                Log in →
+            </button>
+        </form>
+
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
+            No account?
+            <a href="/accounts/register/" style="color:#a78bfa" data-t="link_register">Sign up for free</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

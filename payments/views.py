@@ -31,9 +31,9 @@ def payment_create(request):
 
     if request.method == 'POST':
         loan_id = request.POST.get('loan')
-        amount  = request.POST.get('amount')
-        date    = request.POST.get('date')
-        notes   = request.POST.get('notes')
+        amount = request.POST.get('amount')
+        date = request.POST.get('date')
+        notes = request.POST.get('notes')
 
         if not loan_id or not amount or not date:
             return render(request, 'payments/payment_form.html', {
@@ -70,8 +70,8 @@ def payment_update(request, pk):
     if request.method == 'POST':
         loan_id = request.POST.get('loan')
         amount  = request.POST.get('amount')
-        date    = request.POST.get('date')
-        notes   = request.POST.get('notes')
+        date = request.POST.get('date')
+        notes = request.POST.get('notes')
 
         if not loan_id or not amount or not date:
             return render(request, 'payments/payment_form.html', {

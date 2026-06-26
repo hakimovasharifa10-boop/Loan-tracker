@@ -7,9 +7,9 @@ User = get_user_model()
 class Payment(models.Model):
     user  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
     loan  = models.ForeignKey(Loan, on_delete=models.CASCADE, related_name='payments')
-    amount    = models.DecimalField(max_digits=12, decimal_places=2)
-    date      = models.DateField()
-    notes     = models.TextField(null=True, blank=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    date = models.DateField()
+    notes = models.TextField(null=True, blank=True)
     created_at= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

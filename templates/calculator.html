@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block title %}Loan Calculator — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2 class="page-title">🧮 Loan Calculator</h2>
+</div>
+
+<div class="calc-grid">
+    <!-- LEFT: inputs -->
+    <div class="card">
+        <div class="card-title">Loan Parameters</div>
+
+        <div class="form-group">
+            <label class="form-label">Loan Amount (TJS)</label>
+            <input type="number" id="amount" class="form-input" value="20000" oninput="calculate()">
+            <input type="range" id="s-amount" min="1000" max="200000" step="1000" value="20000" class="calc-slider" oninput="document.getElementById('amount').value=this.value;calculate()">
+            <div class="slider-labels"><span>1,000</span><span>200,000</span></div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Interest Rate (% per year)</label>
+            <input type="number" id="rate" class="form-input" value="18" step="0.1" oninput="calculate()">
+            <input type="range" id="s-rate" min="1" max="50" step="0.5" value="18" class="calc-slider" oninput="document.getElementById('rate').value=this.value;calculate()">
+            <div class="slider-labels"><span>1%</span><span>50%</span></div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Duration (months)</label>
+            <input type="number" id="months" class="form-input" value="12" oninput="calculate()">
+            <input type="range" id="s-months" min="1" max="60" step="1" value="12" class="calc-slider" oninput="document.getElementById('months').value=this.value;calculate()">
+            <div class="slider-labels"><span>1 mo</span><span>60 mo</span></div>
+        </div>
+
+        <div class="ai-tip-box">
+            <div class="ai-tip-title">💡 AI Tip</div>
+            <div class="ai-tip-text" id="tip">Loading...</div>
+        </div>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div class="calc-right">
+        <div class="card">
+            <div class="card-title">Results</div>
+
+            <div class="calc-results">
+                <div class="calc-result-item result-primary">
+                    <div>
+                        <div class="result-label">Monthly Payment</div>
+                        <div class="result-sub">You pay every month</div>
+                    </div>
+                    <div class="result-value result-purple" id="r-monthly">0 TJS</div>
+                </div>
+                <div class="calc-result-item">
+                    <div>
+                        <div class="result-label">Total Payment</div>
+                        <div class="result-sub">Amount + interest</div>
+                    </div>
+                    <div class="result-value" id="r-total">0 TJS</div>
+                </div>
+                <div class="calc-result-item result-danger">
+                    <div>
+                        <div class="result-label">Overpayment</div>
+                        <div class="result-sub">Extra for interest</div>
+                    </div>
+                    <div class="result-value result-red" id="r-over">0 TJS</div>
+                </div>
+            </div>
+
+            <div class="calc-mini-stats">
+                <div class="calc-mini-stat">
+                    <div class="mini-stat-label">Principal</div>
+                    <div class="mini-stat-value green" id="r-principal">0%</div>
+                </div>
+                <div class="calc-mini-stat">
+                    <div class="mini-stat-label">Interest</div>
+                    <div class="mini-stat-value red" id="r-interest">0%</div>
+                </div>
+                <div class="calc-mini-stat">
+                    <div class="mini-stat-label">Duration</div>
+                    <div class="mini-stat-value blue" id="r-duration">12 mo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Payment Schedule</div>
+            <div class="schedule-wrap" id="schedule">
+                <div class="schedule-header">
+                    <span>#</span>
+                    <span>Payment</span>
+                    <span>Principal</span>
+                    <span>Remaining</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function calculate() {
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const rate   = parseFloat(document.getElementById('rate').value)   || 0;
+    const months = parseInt(document.getElementById('months').value)   || 1;
+    const mr     = rate / 100 / 12;
+
+    let monthly;
+    if (mr === 0) {
+        monthly = amount / months;
+    } else {
+        monthly = amount * mr * Math.pow(1+mr, months) / (Math.pow(1+mr, months) - 1);
+    }
+
+    const total     = monthly * months;
+    const over      = total - amount;
+    const principal = Math.round((amount / total) * 100);
+    const interest  = 100 - principal;
+
+    document.getElementById('r-monthly').textContent   = Math.round(monthly).toLocaleString() + ' TJS';
+    document.getElementById('r-total').textContent     = Math.round(total).toLocaleString()   + ' TJS';
+    document.getElementById('r-over').textContent      = Math.round(over).toLocaleString()    + ' TJS';
+    document.getElementById('r-principal').textContent = principal + '%';
+    document.getElementById('r-interest').textContent  = interest  + '%';
+    document.getElementById('r-duration').textContent  = months    + ' mo';
+
+    let tip = '';
+    if (rate > 25)            tip = 'This interest rate is very high! Try to negotiate a lower rate.';
+    else if (months > 36)     tip = 'Long term means more overpayment. Pay extra monthly to close faster.';
+    else if (over/amount>0.3) tip = 'You will overpay more than 30%. Consider a shorter loan term.';
+    else                      tip = 'Good parameters! Your overpayment is reasonable.';
+    document.getElementById('tip').textContent = tip;
+
+    const sched = document.getElementById('schedule');
+    while (sched.children.length > 1) sched.removeChild(sched.lastChild);
+
+    let remaining = amount;
+    for (let i = 1; i <= Math.min(months, 24); i++) {
+        const int_pay  = remaining * mr;
+        const prin_pay = monthly - int_pay;
+        remaining -= prin_pay;
+        if (remaining < 0) remaining = 0;
+
+        const row = document.createElement('div');
+        row.className = 'schedule-row';
+        row.innerHTML = `
+            <span class="sch-num">${i}</span>
+            <span class="sch-payment">${Math.round(monthly).toLocaleString()}</span>
+            <span class="sch-principal">${Math.round(prin_pay).toLocaleString()}</span>
+            <span class="sch-remaining">${Math.round(remaining).toLocaleString()}</span>
+        `;
+        sched.appendChild(row);
+    }
+
+    if (months > 24) {
+        const more = document.createElement('div');
+        more.className = 'schedule-more';
+        more.textContent = `... and ${months - 24} more months`;
+        sched.appendChild(more);
+    }
+}
+
+calculate();
+</script>
+{% endblock %}
