@@ -20,19 +20,28 @@
 
     {% if request.user.is_authenticated %}
     <div class="nav-links">
-        <a href="/dashboard/" class="nav-link">Dashboard</a>
-        <a href="/loans/" class="nav-link">My Loans</a>
-        <a href="/payments/" class="nav-link">Payments</a>
-        <a href="/calculator/" class="nav-link">Calculator</a>
-    </div>
+    <a href="/" class="nav-link">🏠 Home</a>
+    <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+    <a href="/loans/" class="nav-link">🏦 My Loans</a>
+    <a href="/payments/" class="nav-link">💳 Payments</a>
+    <a href="/calculator/" class="nav-link">🧮 Calculator</a>
+    <a href="/accounts/profile/" class="nav-link">👤 Profile</a>
+</div>
     <div class="nav-user">
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
             <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
         </div>
+        <a href="/accounts/profile/" style="display:flex;align-items:center;gap:8px;text-decoration:none">
+    {% if request.user.avatar %}
+        <img src="{{ request.user.avatar.url }}"
+             style="width:30px;height:30px;border-radius:50%;object-fit:cover">
+    {% else %}
         <div class="nav-avatar">{{ request.user.username|slice:":2"|upper }}</div>
-        <span class="nav-username">{{ request.user.username }}</span>
-        <a href="/accounts/logout/" class="nav-link">Logout</a>
+    {% endif %}
+    <span class="nav-username">{{ request.user.username }}</span>
+</a>
+<a href="/accounts/logout/" class="nav-link">Logout</a>
     </div>
     {% else %}
     <div class="nav-links">

@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'loans',
     'payments',
-    'dashboard'
+    'dashboard',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,5 +142,5 @@ STATICFILES_DIRS=[
     BASE_DIR / 'static'
 ]
 
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

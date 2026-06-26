@@ -21,11 +21,13 @@
             <div class="home-bs">Smart Banking Assistant</div>
         </div>
     </a>
-    <div class="home-nav-links">
-        <a href="/" class="home-nav-link">Home</a>
-        <a href="#features" class="home-nav-link">Features</a>
-        <a href="#about" class="home-nav-link">About</a>
-    </div>
+  <div class="home-nav-links">
+    <a href="/" class="home-nav-link home-nav-active">🏠 Home</a>
+    <a href="/dashboard/" class="home-nav-link">📊 Dashboard</a>
+    <a href="/loans/" class="home-nav-link">🏦 My Loans</a>
+    <a href="/payments/" class="home-nav-link">💳 Payments</a>
+    <a href="/calculator/" class="home-nav-link">🧮 Calculator</a>
+</div>
     <div class="home-nav-right">
         <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
         <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
@@ -56,7 +58,7 @@
                 <!-- FRONT -->
                 <div class="card-front">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                        <div style="font-size:20px;font-weight:800;color:white;letter-spacing:1px">LT</div>
+                        <div style="font-size:24px;font-weight:800;color:white;letter-spacing:1px">LT</div>
                         <div class="card-chip"></div>
                     </div>
                     <div class="card-number">**** **** **** 4821</div>
@@ -69,7 +71,7 @@
                             <div class="card-exp-label">Expires</div>
                             <div class="card-exp-val">12/28</div>
                         </div>
-                        <div style="font-size:18px;opacity:0.7">📶</div>
+                        <div style="font-size:22px;opacity:0.7">📶</div>
                     </div>
                 </div>
                 <!-- BACK -->
@@ -80,7 +82,7 @@
                         <div class="card-cvv-val">***</div>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div style="font-size:10px;color:rgba(255,255,255,0.6)">Loan Tracker TJ</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Loan Tracker TJ</div>
                         <div class="card-circles">
                             <div class="card-circle1"></div>
                             <div class="card-circle2"></div>
@@ -144,7 +146,6 @@
 </div>
 
 <script>
-// Particles
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
 resize();window.addEventListener('resize',resize);
@@ -166,27 +167,24 @@ function draw(){
 }
 draw();
 
-// Floating coins
 const items=['💵','🪙','💰','💵','🪙','💵','🪙','💰'];
 const hr=document.getElementById('hr');
 function spawn(){
     const el=document.createElement('div');
     el.className='floating-item';
     el.textContent=items[Math.floor(Math.random()*items.length)];
-    el.style.cssText=`left:${Math.random()*320}px;bottom:${Math.random()*30}px;font-size:${14+Math.random()*14}px;color:${Math.random()>0.5?'#fcd34d':'#a78bfa'};animation:rise ${3+Math.random()*3}s linear forwards;text-shadow:0 0 10px rgba(252,211,77,0.5);position:absolute;pointer-events:none;z-index:20;font-weight:700;opacity:0`;
+    el.style.cssText=`left:${Math.random()*420}px;bottom:${Math.random()*30}px;font-size:${14+Math.random()*14}px;color:${Math.random()>0.5?'#fcd34d':'#a78bfa'};animation:rise ${3+Math.random()*3}s linear forwards;text-shadow:0 0 10px rgba(252,211,77,0.5);position:absolute;pointer-events:none;z-index:20;font-weight:700;opacity:0`;
     hr.appendChild(el);
     setTimeout(()=>el.remove(),6000);
 }
 setInterval(spawn,600);
 
-// Count up
 function countUp(id,target){
     let v=0;const el=document.getElementById(id);if(!el)return;
     const t=setInterval(()=>{v+=target/80;if(v>=target){v=target;clearInterval(t);}el.textContent=Math.round(v).toLocaleString();},16);
 }
 setTimeout(()=>{countUp('s1',1240);countUp('s3',3500);},400);
 
-// Language switcher
 const translations={
     en:{
         login:'Log in',register:'Get Started →',
