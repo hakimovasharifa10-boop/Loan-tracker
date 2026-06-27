@@ -617,3 +617,113 @@ canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0
     gap: 14px;
     margin-bottom: 16px;
 }
+
+/* ===== GOALS ===== */
+.goals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.goal-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(139,92,246,0.15);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    border-radius: 14px 14px 0 0;
+}
+.goal-card:hover {
+    border-color: rgba(139,92,246,0.35);
+    transform: translateY(-3px);
+}
+.goal-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.goal-icon {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    background: rgba(139,92,246,0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.goal-title {
+    color: #e2e8f0;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.goal-desc {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+.goal-amounts {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+.goal-amount-block { text-align: center; flex: 1; }
+.goal-amount-label {
+    font-size: 10px;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+}
+.goal-amount-val {
+    font-size: 15px;
+    font-weight: 700;
+}
+.goal-amount-arrow {
+    color: #475569;
+    font-size: 18px;
+    margin: 0 10px;
+}
+.goal-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+.goal-info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.goal-info-label {
+    font-size: 10px;
+    color: #475569;
+    margin-bottom: 3px;
+}
+.goal-info-val {
+    font-size: 12px;
+    color: #e2e8f0;
+    font-weight: 600;
+}
+.goal-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+}
