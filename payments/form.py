@@ -30,7 +30,6 @@ class PaymentForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        # Передаём пользователя чтобы показывать только его кредиты
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:

@@ -5,6 +5,25 @@ from .forms import PaymentForm
 
 
 @login_required
+def payment_list(request):
+    payments = Payment.objects.filter(user=request.user)
+    loans    = request.user.loans.all()
+    selected_loan = request.GET.get('loan', '')
+
+    if selected_loan:
+        payments = payments.filter(loan__id=selected_loan)
+
+    total = sum(p.amount for p in payments)
+
+    return render(request, 'payments/payment_list.html', {
+        'payments':      payments,
+        'loans':         loans,
+        'selected_loan': selected_loan,
+        'total':         total,
+    })
+
+
+@login_required
 def payment_create(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST, user=request.user)
@@ -37,3 +56,16 @@ def payment_update(request, pk):
         'form':    form,
         'payment': payment,
     })
+
+
+@login_required
+def payment_delete(request, pk):
+    payment = Payment.objects.filter(pk=pk, user=request.user).first()
+    if not payment:
+        return redirect('payment_list')
+
+    if request.method == 'POST':
+        payment.delete()
+        return redirect('payment_list')
+
+    return render(request, 'payments/payment_confirm_delete.html', {'payment': payment})
