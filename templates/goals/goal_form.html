@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}{% if goal %}Edit Goal{% else %}New Goal{% endif %} — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2 class="page-title">{% if goal %}✏ Edit Goal{% else %}🎯 New Goal{% endif %}</h2>
+    <a href="/goals/" class="btn btn-secondary">← Back</a>
+</div>
+
+{% if not goal %}
+<!-- Goal templates -->
+<div class="card" style="margin-bottom:16px">
+    <div class="card-title">💡 Quick templates</div>
+    <div class="goal-templates">
+        <div class="goal-template" onclick="setTemplate('🏠','New apartment','50000','730')">
+            <div class="goal-template-icon">🏠</div>
+            <div class="goal-template-name">New apartment</div>
+            <div class="goal-template-amount">50,000 TJS</div>
+        </div>
+        <div class="goal-template" onclick="setTemplate('🚗','New car','30000','365')">
+            <div class="goal-template-icon">🚗</div>
+            <div class="goal-template-name">New car</div>
+            <div class="goal-template-amount">30,000 TJS</div>
+        </div>
+        <div class="goal-template" onclick="setTemplate('✈️','Vacation','10000','180')">
+            <div class="goal-template-icon">✈️</div>
+            <div class="goal-template-name">Vacation</div>
+            <div class="goal-template-amount">10,000 TJS</div>
+        </div>
+        <div class="goal-template" onclick="setTemplate('🎓','Education','15000','365')">
+            <div class="goal-template-icon">🎓</div>
+            <div class="goal-template-name">Education</div>
+            <div class="goal-template-amount">15,000 TJS</div>
+        </div>
+        <div class="goal-template" onclick="setTemplate('💍','Wedding','25000','365')">
+            <div class="goal-template-icon">💍</div>
+            <div class="goal-template-name">Wedding</div>
+            <div class="goal-template-amount">25,000 TJS</div>
+        </div>
+        <div class="goal-template" onclick="setTemplate('🏦','Close loan','20000','180')">
+            <div class="goal-template-icon">🏦</div>
+            <div class="goal-template-name">Close loan</div>
+            <div class="goal-template-amount">20,000 TJS</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Form -->
+<div class="card" style="max-width:700px;margin:0 auto">
+
+    {% if error %}
+        <div class="alert-error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label">🎯 Goal title</label>
+            <input type="text" name="title" class="form-input" id="title"
+                   placeholder="e.g. New apartment, vacation, car..."
+                   value="{{ goal.title }}">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">📝 Description (optional)</label>
+            <input type="text" name="description" class="form-input"
+                   placeholder="Describe your goal..."
+                   value="{{ goal.description }}">
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">💰 Target amount (TJS)</label>
+                <input type="number" name="target_amount" class="form-input" id="target_amount"
+                       placeholder="50000" step="0.01"
+                       value="{{ goal.target_amount }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">📅 Target date</label>
+                <input type="date" name="target_date" class="form-input" id="target_date"
+                       value="{{ goal.target_date|date:'Y-m-d' }}">
+            </div>
+        </div>
+
+        {% if goal %}
+        <div class="form-group">
+            <label class="form-label">💵 Current saved (TJS)</label>
+            <input type="number" name="current_amount" class="form-input"
+                   placeholder="0" step="0.01"
+                   value="{{ goal.current_amount }}">
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="form-label">🎨 Choose icon</label>
+            <div class="icon-grid">
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🎯" {% if not goal.icon or goal.icon == '🎯' %}checked{% endif %}>
+                    <span>🎯</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🏠" {% if goal.icon == '🏠' %}checked{% endif %}>
+                    <span>🏠</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🚗" {% if goal.icon == '🚗' %}checked{% endif %}>
+                    <span>🚗</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="✈️" {% if goal.icon == '✈️' %}checked{% endif %}>
+                    <span>✈️</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🎓" {% if goal.icon == '🎓' %}checked{% endif %}>
+                    <span>🎓</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="💍" {% if goal.icon == '💍' %}checked{% endif %}>
+                    <span>💍</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🏦" {% if goal.icon == '🏦' %}checked{% endif %}>
+                    <span>🏦</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="💼" {% if goal.icon == '💼' %}checked{% endif %}>
+                    <span>💼</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="🎮" {% if goal.icon == '🎮' %}checked{% endif %}>
+                    <span>🎮</span>
+                </label>
+                <label class="icon-option">
+                    <input type="radio" name="icon" value="📱" {% if goal.icon == '📱' %}checked{% endif %}>
+                    <span>📱</span>
+                </label>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:8px">
+            <button type="submit" class="btn btn-primary">
+                {% if goal %}💾 Save{% else %}🎯 Create Goal{% endif %}
+            </button>
+            <a href="/goals/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function setTemplate(icon, title, amount, days) {
+    document.getElementById('title').value = title;
+    document.getElementById('target_amount').value = amount;
+    
+    const date = new Date();
+    date.setDate(date.getDate() + parseInt(days));
+    document.getElementById('target_date').value = date.toISOString().split('T')[0];
+    
+    document.querySelector(`input[value="${icon}"]`).checked = true;
+}
+</script>
+
+{% endblock %}
