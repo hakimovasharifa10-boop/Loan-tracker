@@ -22,18 +22,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # Главная страница
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-
-    
     path('accounts/',  include('accounts.urls')),
     path('loans/',     include('loans.urls')),
     path('payments/',  include('payments.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('goals/', include('goals.urls')),
-
-    
     path('calculator/', TemplateView.as_view(template_name='calculator.html'), name='calculator'),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
