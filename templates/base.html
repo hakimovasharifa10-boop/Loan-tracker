@@ -1,136 +1,159 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" id="html-root">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Loan Tracker TJ{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
-
-<nav class="navbar">
-    <a href="/" class="brand">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="brand">
         <div class="brand-icon">🏦</div>
         <div>
-            <div class="brand-name">Loan Tracker TJ</div>
-            <div class="brand-sub">Smart Banking Assistant</div>
+          <div class="brand-name">Loan Tracker TJ</div>
+          <div class="brand-sub">Smart Banking Assistant</div>
         </div>
-    </a>
+      </a>
 
-    {% if request.user.is_authenticated %}
-    <div class="nav-links">
-    <a href="/" class="nav-link">🏠 Home</a>
-    <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
-    <a href="/loans/" class="nav-link">🏦 My Loans</a>
-    <a href="/payments/" class="nav-link">💳 Payments</a>
-    <a href="/calculator/" class="nav-link">🧮 Calculator</a>
-    <a href="/accounts/profile/" class="nav-link">👤 Profile</a>
-</div>
-    <div class="nav-user">
+      {% if request.user.is_authenticated %}
+      <div class="nav-links">
+        <a href="/" class="nav-link">🏠 Home</a>
+        <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+        <a href="/loans/" class="nav-link">🏦 My Loans</a>
+        <a href="/payments/" class="nav-link">💳 Payments</a>
+        <a href="/calculator/" class="nav-link">🧮 Calculator</a>
+        <a href="/goals/" class="nav-link">🎯 Goals</a>
+        <a href="/accounts/profile/" class="nav-link">👤 Profile</a>
+      </div>
+      <div class="nav-user">
         <div class="lang-switch">
-            <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
-            <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+          <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+          <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
         </div>
-        <a href="/accounts/profile/" style="display:flex;align-items:center;gap:8px;text-decoration:none">
-    {% if request.user.avatar %}
-        <img src="{{ request.user.avatar.url }}"
-             style="width:30px;height:30px;border-radius:50%;object-fit:cover">
-    {% else %}
-        <div class="nav-avatar">{{ request.user.username|slice:":2"|upper }}</div>
-    {% endif %}
-    <span class="nav-username">{{ request.user.username }}</span>
-</a>
-<a href="/accounts/logout/" class="nav-link">Logout</a>
-    </div>
-    {% else %}
-    <div class="nav-links">
+        <a
+          href="/accounts/profile/"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+          "
+        >
+          {% if request.user.avatar %}
+          <img
+            src="{{ request.user.avatar.url }}"
+            style="
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              object-fit: cover;
+            "
+          />
+          {% else %}
+          <div class="nav-avatar">
+            {{ request.user.username|slice:":2"|upper }}
+          </div>
+          {% endif %}
+          <span class="nav-username">{{ request.user.username }}</span>
+        </a>
+        <a href="/accounts/logout/" class="nav-link">Logout</a>
+      </div>
+      {% else %}
+      <div class="nav-links">
         <a href="/" class="nav-link">Home</a>
-    </div>
-    <div class="nav-user">
+      </div>
+      <div class="nav-user">
         <div class="lang-switch">
-            <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
-            <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+          <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+          <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
         </div>
         <a href="/accounts/login/" class="nav-link">Log in</a>
         <a href="/accounts/register/" class="btn btn-primary">Get Started →</a>
+      </div>
+      {% endif %}
+    </nav>
+
+    {% if request.user.is_authenticated %}
+    <div class="ai-bar">
+      <form
+        action="/loans/"
+        method="get"
+        style="display: flex; gap: 8px; width: 100%"
+      >
+        <div class="ai-dot"></div>
+        <input
+          type="text"
+          name="ai_help"
+          class="ai-input"
+          placeholder="Ask AI: Which loan should I pay first?"
+        />
+        <button type="submit" class="ai-btn">Ask AI ✨</button>
+      </form>
     </div>
     {% endif %}
-</nav>
 
-{% if request.user.is_authenticated %}
-<div class="ai-bar">
-    <form action="/loans/" method="get" style="display:flex;gap:8px;width:100%">
-        <div class="ai-dot"></div>
-        <input type="text" name="ai_help" class="ai-input" placeholder="Ask AI: Which loan should I pay first?">
-        <button type="submit" class="ai-btn">Ask AI ✨</button>
-    </form>
-</div>
-{% endif %}
+    <div class="container">{% block content %}{% endblock %}</div>
 
-<div class="container">
-    {% block content %}{% endblock %}
-</div>
+    <script>
+      const translations = {
+        en: {
+          dashboard: "Dashboard",
+          my_loans: "My Loans",
+          payments: "Payments",
+          calculator: "Calculator",
+          logout: "Logout",
+          login: "Log in",
+          register: "Get Started",
+          ask_ai: "Ask AI: Which loan should I pay first?",
+        },
+        ru: {
+          dashboard: "Главная",
+          my_loans: "Мои кредиты",
+          payments: "Платежи",
+          calculator: "Калькулятор",
+          logout: "Выйти",
+          login: "Войти",
+          register: "Начать",
+          ask_ai: "Спросить AI: Какой кредит закрыть первым?",
+        },
+      };
 
-<script>
-const translations = {
-    en: {
-        dashboard: 'Dashboard',
-        my_loans: 'My Loans',
-        payments: 'Payments',
-        calculator: 'Calculator',
-        logout: 'Logout',
-        login: 'Log in',
-        register: 'Get Started',
-        ask_ai: 'Ask AI: Which loan should I pay first?',
-    },
-    ru: {
-        dashboard: 'Главная',
-        my_loans: 'Мои кредиты',
-        payments: 'Платежи',
-        calculator: 'Калькулятор',
-        logout: 'Выйти',
-        login: 'Войти',
-        register: 'Начать',
-        ask_ai: 'Спросить AI: Какой кредит закрыть первым?',
-    }
-};
+      function setLang(lang) {
+        localStorage.setItem("lang", lang);
 
-function setLang(lang) {
-    localStorage.setItem('lang', lang);
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.remove("active");
+          if (btn.textContent.includes(lang.toUpperCase())) {
+            btn.classList.add("active");
+          }
+        });
 
-    
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.includes(lang.toUpperCase())) {
-            btn.classList.add('active');
-        }
-    });
+        const t = translations[lang];
+        const map = {
+          '[data-t="dashboard"]': t.dashboard,
+          '[data-t="my_loans"]': t.my_loans,
+          '[data-t="payments"]': t.payments,
+          '[data-t="calculator"]': t.calculator,
+          '[data-t="logout"]': t.logout,
+          '[data-t="login"]': t.login,
+          '[data-t="register"]': t.register,
+        };
+        Object.entries(map).forEach(([sel, text]) => {
+          document
+            .querySelectorAll(sel)
+            .forEach((el) => (el.textContent = text));
+        });
 
-    const t = translations[lang];
-    const map = {
-        '[data-t="dashboard"]': t.dashboard,
-        '[data-t="my_loans"]': t.my_loans,
-        '[data-t="payments"]': t.payments,
-        '[data-t="calculator"]': t.calculator,
-        '[data-t="logout"]': t.logout,
-        '[data-t="login"]': t.login,
-        '[data-t="register"]': t.register,
-    };
-    Object.entries(map).forEach(([sel, text]) => {
-        document.querySelectorAll(sel).forEach(el => el.textContent = text);
-    });
+        const aiInput = document.querySelector(".ai-input");
+        if (aiInput) aiInput.placeholder = t.ask_ai;
+      }
 
-    
-    const aiInput = document.querySelector('.ai-input');
-    if (aiInput) aiInput.placeholder = t.ask_ai;
-}
+      const savedLang = localStorage.getItem("lang") || "en";
+      setLang(savedLang);
+    </script>
 
-
-const savedLang = localStorage.getItem('lang') || 'en';
-setLang(savedLang);
-</script>
-
-{% block extra_js %}{% endblock %}
-</body>
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>

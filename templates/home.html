@@ -18,16 +18,17 @@
         <div class="home-bi">🏦</div>
         <div>
             <div class="home-bn">Loan Tracker TJ</div>
-            <div class="home-bs">Smart Banking Assistant</div>
+            <div class="home-bs" data-t="brand_sub">Smart Banking Assistant</div>
         </div>
     </a>
-  <div class="home-nav-links">
-    <a href="/" class="home-nav-link home-nav-active">🏠 Home</a>
-    <a href="/dashboard/" class="home-nav-link">📊 Dashboard</a>
-    <a href="/loans/" class="home-nav-link">🏦 My Loans</a>
-    <a href="/payments/" class="home-nav-link">💳 Payments</a>
-    <a href="/calculator/" class="home-nav-link">🧮 Calculator</a>
-</div>
+    <div class="home-nav-links">
+        <a href="/" class="home-nav-link home-nav-active">🏠 <span data-t="home">Home</span></a>
+        <a href="/dashboard/" class="home-nav-link">📊 <span data-t="dashboard">Dashboard</span></a>
+        <a href="/loans/" class="home-nav-link">🏦 <span data-t="my_loans">My Loans</span></a>
+        <a href="/payments/" class="home-nav-link">💳 <span data-t="payments">Payments</span></a>
+        <a href="/goals/" class="home-nav-link">🎯 <span data-t="goals">Goals</span></a>
+        <a href="/calculator/" class="home-nav-link">🧮 <span data-t="calculator">Calculator</span></a>
+    </div>
     <div class="home-nav-right">
         <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
         <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
@@ -40,8 +41,8 @@
 <div class="hero">
     <div class="hero-left">
         <div class="hero-title">
-            Manage your loans<br>
-            <span class="grad">smarter with AI</span>
+            <span data-t="hero_title_1">Manage your loans</span><br>
+            <span class="grad" data-t="hero_title_2">smarter with AI</span>
         </div>
         <div class="hero-sub" data-t="hero_sub">
             Add loans from any bank, track payments and get AI-powered advice — all in one place. Never miss a payment again.
@@ -64,11 +65,11 @@
                     <div class="card-number">**** **** **** 4821</div>
                     <div style="display:flex;justify-content:space-between;align-items:flex-end">
                         <div>
-                            <div class="card-holder-label">Card Holder</div>
+                            <div class="card-holder-label" data-t="card_holder">Card Holder</div>
                             <div class="card-holder-name">Sharifa H.</div>
                         </div>
                         <div>
-                            <div class="card-exp-label">Expires</div>
+                            <div class="card-exp-label" data-t="expires">Expires</div>
                             <div class="card-exp-val">12/28</div>
                         </div>
                         <div style="font-size:22px;opacity:0.7">📶</div>
@@ -97,36 +98,36 @@
 <!-- DIVIDER -->
 <div class="divider" id="features">
     <div class="div-line"></div>
-    <div class="div-text">✨ Everything you need</div>
+    <div class="div-text" data-t="everything">✨ Everything you need</div>
     <div class="div-line"></div>
 </div>
 
 <!-- FEATURES -->
 <div class="features-section">
     <div class="section-title">
-        <h2>Why choose <span>Loan Tracker TJ?</span></h2>
+        <h2><span data-t="why_choose">Why choose</span> <span class="grad">Loan Tracker TJ?</span></h2>
         <p data-t="why_sub">The smartest way to track and manage all your bank loans in one place</p>
     </div>
     <div class="features-grid">
         <div class="feat-card fc1">
             <div class="feat-icon fi1">🤖</div>
             <div class="feat-title" data-t="f1">AI Financial Advisor</div>
-            <span class="feat-badge fb1">Powered by AI</span>
+            <span class="feat-badge fb1" data-t="f1_badge">Powered by AI</span>
         </div>
         <div class="feat-card fc2">
             <div class="feat-icon fi2">💱</div>
             <div class="feat-title" data-t="f2">Live Exchange Rates</div>
-            <span class="feat-badge fb2">Live data</span>
+            <span class="feat-badge fb2" data-t="f2_badge">Live data</span>
         </div>
         <div class="feat-card fc3">
             <div class="feat-icon fi3">⚠️</div>
             <div class="feat-title" data-t="f3">Overdue Warnings</div>
-            <span class="feat-badge fb3">Smart alerts</span>
+            <span class="feat-badge fb3" data-t="f3_badge">Smart alerts</span>
         </div>
         <div class="feat-card fc4">
             <div class="feat-icon fi4">🧮</div>
             <div class="feat-title" data-t="f4">Loan Calculator</div>
-            <span class="feat-badge fb4">Instant results</span>
+            <span class="feat-badge fb4" data-t="f4_badge">Instant results</span>
         </div>
     </div>
     <div class="bottom-stats">
@@ -146,6 +147,7 @@
 </div>
 
 <script>
+// Particles
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
 resize();window.addEventListener('resize',resize);
@@ -167,6 +169,7 @@ function draw(){
 }
 draw();
 
+// Floating coins
 const items=['💵','🪙','💰','💵','🪙','💵','🪙','💰'];
 const hr=document.getElementById('hr');
 function spawn(){
@@ -179,28 +182,78 @@ function spawn(){
 }
 setInterval(spawn,600);
 
+// Count up
 function countUp(id,target){
     let v=0;const el=document.getElementById(id);if(!el)return;
     const t=setInterval(()=>{v+=target/80;if(v>=target){v=target;clearInterval(t);}el.textContent=Math.round(v).toLocaleString();},16);
 }
 setTimeout(()=>{countUp('s1',1240);countUp('s3',3500);},400);
 
-const translations={
-    en:{
-        login:'Log in',register:'Get Started →',
-        hero_sub:'Add loans from any bank, track payments and get AI-powered advice — all in one place.',
-        btn_start:'Start for Free ✨',btn_demo:'Learn More →',
-        why_sub:'The smartest way to track and manage all your bank loans in one place',
-        f1:'AI Financial Advisor',f2:'Live Exchange Rates',f3:'Overdue Warnings',f4:'Loan Calculator',
-        stat1:'Happy users in Tajikistan',stat2:'Free forever',stat3:'Loans tracked',
+// === ПОЛНЫЙ ПЕРЕВОДЧИК ===
+const translations = {
+    en: {
+        brand_sub: 'Smart Banking Assistant',
+        home: 'Home',
+        dashboard: 'Dashboard',
+        my_loans: 'My Loans',
+        payments: 'Payments',
+        goals: 'Goals',
+        calculator: 'Calculator',
+        login: 'Log in',
+        register: 'Get Started →',
+        hero_title_1: 'Manage your loans',
+        hero_title_2: 'smarter with AI',
+        hero_sub: 'Add loans from any bank, track payments and get AI-powered advice — all in one place. Never miss a payment again.',
+        btn_start: 'Start for Free ✨',
+        btn_demo: 'Learn More →',
+        everything: '✨ Everything you need',
+        why_choose: 'Why choose',
+        why_sub: 'The smartest way to track and manage all your bank loans in one place',
+        f1: 'AI Financial Advisor',
+        f2: 'Live Exchange Rates',
+        f3: 'Overdue Warnings',
+        f4: 'Loan Calculator',
+        f1_badge: 'Powered by AI',
+        f2_badge: 'Live data',
+        f3_badge: 'Smart alerts',
+        f4_badge: 'Instant results',
+        stat1: 'Happy users in Tajikistan',
+        stat2: 'Free forever',
+        stat3: 'Loans tracked',
+        card_holder: 'Card Holder',
+        expires: 'Expires',
     },
-    ru:{
-        login:'Войти',register:'Начать →',
-        hero_sub:'Добавляйте кредиты из любого банка, отслеживайте платежи и получайте советы AI — всё в одном месте.',
-        btn_start:'Начать бесплатно ✨',btn_demo:'Узнать больше →',
-        why_sub:'Самый умный способ отслеживать все ваши банковские кредиты',
-        f1:'AI Финансовый советник',f2:'Курсы валют онлайн',f3:'Просроченные платежи',f4:'Калькулятор кредита',
-        stat1:'Пользователей в Таджикистане',stat2:'Бесплатно навсегда',stat3:'Кредитов отслежено',
+    ru: {
+        brand_sub: 'Умный банковский помощник',
+        home: 'Главная',
+        dashboard: 'Панель',
+        my_loans: 'Мои кредиты',
+        payments: 'Платежи',
+        goals: 'Цели',
+        calculator: 'Калькулятор',
+        login: 'Войти',
+        register: 'Начать →',
+        hero_title_1: 'Управляйте кредитами',
+        hero_title_2: 'умнее с AI',
+        hero_sub: 'Добавляйте кредиты из любого банка, отслеживайте платежи и получайте советы AI — всё в одном месте. Не пропускайте платежи.',
+        btn_start: 'Начать бесплатно ✨',
+        btn_demo: 'Узнать больше →',
+        everything: '✨ Всё что вам нужно',
+        why_choose: 'Почему',
+        why_sub: 'Самый умный способ отслеживать все ваши банковские кредиты',
+        f1: 'AI Финансовый советник',
+        f2: 'Курсы валют онлайн',
+        f3: 'Просроченные платежи',
+        f4: 'Калькулятор кредита',
+        f1_badge: 'Работает на AI',
+        f2_badge: 'Живые данные',
+        f3_badge: 'Умные уведомления',
+        f4_badge: 'Мгновенный расчёт',
+        stat1: 'Пользователей в Таджикистане',
+        stat2: 'Бесплатно навсегда',
+        stat3: 'Кредитов отслежено',
+        card_holder: 'Владелец карты',
+        expires: 'Срок до',
     }
 };
 
@@ -209,10 +262,10 @@ function setLang(lang){
     document.querySelectorAll('.lang-btn').forEach(btn=>{
         btn.classList.toggle('active',btn.textContent.includes(lang.toUpperCase()));
     });
-    const t=translations[lang];
-    Object.entries(t).forEach(([key,val])=>{
-        if(!val)return;
-        document.querySelectorAll(`[data-t="${key}"]`).forEach(el=>el.textContent=val);
+    const t = translations[lang];
+    document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (t[key]) el.textContent = t[key];
     });
 }
 const savedLang=localStorage.getItem('lang')||'en';
