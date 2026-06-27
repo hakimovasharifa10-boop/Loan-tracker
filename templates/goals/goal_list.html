@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}My Goals — Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+{% if ai_answer %}
+<div class="ai-answer">
+    🤖 <strong style="color:#a78bfa">AI:</strong> {{ ai_answer }}
+</div>
+{% endif %}
+
+<div class="page-header">
+    <h2 class="page-title">🎯 My Savings Goals</h2>
+    <a href="/goals/create/" class="btn btn-primary">+ New Goal</a>
+</div>
+
+<!-- AI Helper bar -->
+<div class="card" style="background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.15);margin-bottom:16px">
+    <form method="get" style="display:flex;gap:10px;align-items:center">
+        <span style="font-size:20px">💡</span>
+        <div style="flex:1">
+            <div style="color:#fcd34d;font-size:12px;font-weight:600;margin-bottom:4px">Ask AI for advice</div>
+            <input type="text" name="ai_help" class="form-input"
+                   placeholder="e.g. How can I save 10000 TJS in 6 months?"
+                   style="background:rgba(0,0,0,0.2)">
+        </div>
+        <button type="submit" class="btn btn-primary">Ask AI ✨</button>
+    </form>
+</div>
+
+<!-- Stats -->
+{% if goals %}
+<div class="stats-grid">
+    <div class="stat-card stat-info">
+        <div class="stat-label">Total goals</div>
+        <div class="stat-value">{{ goals.count }}</div>
+        <div class="stat-sub">Active</div>
+    </div>
+    <div class="stat-card stat-success">
+        <div class="stat-label">Total target</div>
+        <div class="stat-value">
+            {% with total=0 %}
+                {% for g in goals %}{% with total=total|add:g.target_amount %}{% endwith %}{% endfor %}
+            {% endwith %}
+            {% for g in goals %}{% if forloop.first %}{{ g.target_amount }}{% endif %}{% endfor %}+ TJS
+        </div>
+        <div class="stat-sub">All goals</div>
+    </div>
+    <div class="stat-card stat-warning">
+        <div class="stat-label">Saved so far</div>
+        <div class="stat-value">
+            {% for g in goals %}{% if forloop.first %}{{ g.current_amount }}{% endif %}{% endfor %}+ TJS
+        </div>
+        <div class="stat-sub">Progress</div>
+    </div>
+    <div class="stat-card stat-danger">
+        <div class="stat-label">Closest goal</div>
+        <div class="stat-value">
+            {% for g in goals %}{% if forloop.first %}{{ g.days_left }} days{% endif %}{% endfor %}
+        </div>
+        <div class="stat-sub">Time left</div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Goals grid -->
+<div class="goals-grid">
+    {% for goal in goals %}
+    <div class="goal-card">
+
+        <div class="goal-top">
+            <div class="goal-icon">{{ goal.icon }}</div>
+            <div style="flex:1">
+                <div class="goal-title">{{ goal.title }}</div>
+                {% if goal.description %}
+                    <div class="goal-desc">{{ goal.description }}</div>
+                {% endif %}
+            </div>
+            {% if goal.is_overdue %}
+                <span class="badge badge-danger">Overdue!</span>
+            {% elif goal.progress_percent == 100 %}
+                <span class="badge badge-success">✓ Done!</span>
+            {% else %}
+                <span class="badge badge-info">Active</span>
+            {% endif %}
+        </div>
+
+        <div class="goal-amounts">
+            <div class="goal-amount-block">
+                <div class="goal-amount-label">Current</div>
+                <div class="goal-amount-val" style="color:#34d399">{{ goal.current_amount }} TJS</div>
+            </div>
+            <div class="goal-amount-arrow">→</div>
+            <div class="goal-amount-block">
+                <div class="goal-amount-label">Target</div>
+                <div class="goal-amount-val" style="color:#a78bfa">{{ goal.target_amount }} TJS</div>
+            </div>
+        </div>
+
+        <div class="progress-bar" style="height:8px">
+            <div class="progress-fill" style="width:{{ goal.progress_percent }}%;height:8px;background:linear-gradient(90deg,#7c3aed,#db2777)"></div>
+        </div>
+        <div class="progress-text">
+            <span>{{ goal.progress_percent }}% completed</span>
+            <span>{{ goal.remaining_amount }} TJS left</span>
+        </div>
+
+        <div class="goal-info-row">
+            <div class="goal-info-item">
+                <span class="goal-info-label">📅 Target date</span>
+                <span class="goal-info-val">{{ goal.target_date }}</span>
+            </div>
+            <div class="goal-info-item">
+                <span class="goal-info-label">⏰ Days left</span>
+                <span class="goal-info-val">{{ goal.days_left }} days</span>
+            </div>
+            <div class="goal-info-item">
+                <span class="goal-info-label">💰 Per month</span>
+                <span class="goal-info-val" style="color:#fcd34d">{{ goal.monthly_needed }} TJS</span>
+            </div>
+        </div>
+
+        <div class="goal-actions">
+            <a href="/goals/{{ goal.pk }}/edit/" class="btn btn-secondary btn-sm">✏ Edit</a>
+            <form method="post" action="/goals/{{ goal.pk }}/delete/" style="display:inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Delete this goal?')">🗑 Delete</button>
+            </form>
+        </div>
+
+    </div>
+    {% empty %}
+    <div class="card" style="text-align:center;padding:40px;grid-column:1/-1">
+        <div style="font-size:48px;margin-bottom:16px">🎯</div>
+        <h3 style="color:#e2e8f0;margin-bottom:8px">No goals yet</h3>
+        <p style="color:#475569;font-size:13px;margin-bottom:20px">
+            Set your first savings goal and let AI help you reach it!
+        </p>
+        <a href="/goals/create/" class="btn btn-primary">+ Create First Goal</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
