@@ -9,7 +9,6 @@ class CustomUserAdmin(UserAdmin):
     list_filter   = ('is_active', 'is_staff')
     search_fields = ('username', 'email', 'phone')
     
-    
     fieldsets = UserAdmin.fieldsets + (
         ('Extra Info', {'fields': ('phone', 'address', 'avatar')}),
     )

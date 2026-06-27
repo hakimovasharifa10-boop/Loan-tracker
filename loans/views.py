@@ -75,14 +75,14 @@ Be specific with numbers.'''
 @login_required
 def loan_create(request):
     if request.method == 'POST':
-        bank_name       = request.POST.get('bank_name')
-        amount          = request.POST.get('amount')
+        bank_name = request.POST.get('bank_name')
+        amount = request.POST.get('amount')
         interest_rate   = request.POST.get('interest_rate')
         monthly_payment = request.POST.get('monthly_payment')
-        start_date      = request.POST.get('start_date')
-        end_date        = request.POST.get('end_date')
-        notes           = request.POST.get('notes')
-        logo            = request.FILES.get('logo')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        notes = request.POST.get('notes')
+        logo = request.FILES.get('logo')
 
         if not bank_name or not amount or not interest_rate or not monthly_payment or not start_date or not end_date:
             return render(request, 'loans/loan_form.html', {
@@ -111,14 +111,14 @@ def loan_update(request, pk):
         return redirect('loan_list')
 
     if request.method == 'POST':
-        bank_name       = request.POST.get('bank_name')
-        amount          = request.POST.get('amount')
+        bank_name = request.POST.get('bank_name')
+        amount = request.POST.get('amount')
         interest_rate   = request.POST.get('interest_rate')
         monthly_payment = request.POST.get('monthly_payment')
-        start_date      = request.POST.get('start_date')
-        end_date        = request.POST.get('end_date')
-        notes           = request.POST.get('notes')
-        logo            = request.FILES.get('logo')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        notes = request.POST.get('notes')
+        logo = request.FILES.get('logo')
 
         if not bank_name or not amount or not interest_rate or not monthly_payment or not start_date or not end_date:
             return render(request, 'loans/loan_form.html', {
@@ -127,12 +127,12 @@ def loan_update(request, pk):
             })
             
             
-        loan.amount          = amount
+        loan.amount = amount
         loan.interest_rate   = interest_rate
         loan.monthly_payment = monthly_payment
-        loan.start_date      = start_date
-        loan.end_date        = end_date
-        loan.notes           = notes
+        loan.start_date = start_date
+        loan.end_date  = end_date
+        loan.notes = notes
         if logo:
             loan.logo = logo
         loan.save()

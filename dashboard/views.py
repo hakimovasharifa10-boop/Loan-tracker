@@ -45,12 +45,10 @@ def dashboard_view(request):
     )
     next_payment = upcoming_loans[0] if upcoming_loans else None
 
-    # Последние платежи
+
     recent_payments = payments[:5]
 
-    # ===== ДАННЫЕ ДЛЯ ГРАФИКОВ =====
 
-    # Bar chart — платежи по последним 6 месяцам
     months_labels = []
     months_data   = []
     for i in range(5, -1, -1):
