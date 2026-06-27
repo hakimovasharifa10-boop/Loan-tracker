@@ -96,10 +96,10 @@ const translations = {
     }
 };
 
-function setLang(lang) 
+function setLang(lang) {
     localStorage.setItem('lang', lang);
 
-    // Меняем кнопки языка
+    
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.textContent.includes(lang.toUpperCase())) {

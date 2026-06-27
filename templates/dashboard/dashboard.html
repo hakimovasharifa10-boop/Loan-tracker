@@ -3,12 +3,6 @@
 
 {% block content %}
 
-{% if ai_answer %}
-<div class="ai-answer">
-    🤖 <strong style="color:#a78bfa">AI:</strong> {{ ai_answer }}
-</div>
-{% endif %}
-
 {% for loan in overdue_loans %}
 <div class="alert-warning">
     ⚠️ <strong>Overdue!</strong> {{ loan.bank_name }} — {{ loan.monthly_payment }} TJS — {{ loan.end_date }}
@@ -16,7 +10,7 @@
 {% endfor %}
 
 <div style="margin-bottom:20px">
-    <h2 style="color:#e2e8f0;font-size:18px;font-weight:600;margin-bottom:4px">
+    <h2 style="color:#e2e8f0;font-size:20px;font-weight:600;margin-bottom:4px">
         Good day, {{ request.user.username }}! 👋
     </h2>
     <p style="color:#475569;font-size:13px">Here is your loan overview</p>
@@ -70,13 +64,36 @@
     </div>
 </div>
 
+<!-- CHARTS -->
+<div class="charts-grid">
+
+    <!-- Bar chart -->
+    <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between">
+            📊 Payments per month
+            <span class="badge badge-info">Last 6 months</span>
+        </div>
+        <canvas id="barChart" height="100"></canvas>
+    </div>
+
+    <!-- Pie chart -->
+    <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between">
+            🥧 Debt by bank
+            <span class="badge badge-info">Distribution</span>
+        </div>
+        <canvas id="pieChart" height="100"></canvas>
+    </div>
+
+</div>
+
 <!-- Loans + Recent payments -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
     <div class="card">
         <div class="card-title" style="display:flex;justify-content:space-between">
             My Loans
-            <a href="/loans/" style="color:#a78bfa;font-size:11px">View all →</a>
+            <a href="/loans/" style="color:#a78bfa;font-size:11px;text-decoration:none">View all →</a>
         </div>
         {% for loan in loans %}
         <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.04)">
@@ -118,7 +135,7 @@
     <div class="card">
         <div class="card-title" style="display:flex;justify-content:space-between">
             Recent Payments
-            <a href="/payments/" style="color:#a78bfa;font-size:11px">View all →</a>
+            <a href="/payments/" style="color:#a78bfa;font-size:11px;text-decoration:none">View all →</a>
         </div>
         {% for payment in recent_payments %}
         <div class="pay-row">
@@ -137,4 +154,99 @@
 
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const barCtx = document.getElementById('barChart').getContext('2d');
+
+// Создаём градиент для столбиков
+const gradient = barCtx.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgba(139,92,246,0.8)');
+gradient.addColorStop(1, 'rgba(219,39,119,0.3)');
+
+new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ months_labels|safe }},
+        datasets: [{
+            label: 'TJS',
+            data: {{ months_data|safe }},
+            backgroundColor: gradient,
+            borderColor: '#a78bfa',
+            borderWidth: 1,
+            borderRadius: 8,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(7,2,15,0.95)',
+                titleColor: '#a78bfa',
+                bodyColor: '#e2e8f0',
+                borderColor: 'rgba(139,92,246,0.3)',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                    label: (ctx) => ctx.parsed.y.toLocaleString() + ' TJS'
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { color: '#64748b', font: { size: 10 } },
+                grid: { color: 'rgba(255,255,255,0.04)' }
+            },
+            x: {
+                ticks: { color: '#64748b', font: { size: 11 } },
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+// === PIE CHART — Debt by bank ===
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+new Chart(pieCtx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ banks_labels|safe }},
+        datasets: [{
+            data: {{ banks_data|safe }},
+            backgroundColor: ['#7c3aed', '#db2777', '#f59e0b', '#0ea5e9', '#10b981', '#ef4444'],
+            borderColor: '#07020f',
+            borderWidth: 2,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    color: '#94a3b8',
+                    font: { size: 11 },
+                    padding: 10,
+                    boxWidth: 10
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(7,2,15,0.95)',
+                titleColor: '#a78bfa',
+                bodyColor: '#e2e8f0',
+                borderColor: 'rgba(139,92,246,0.3)',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                    label: (ctx) => ctx.label + ': ' + ctx.parsed.toLocaleString() + ' TJS'
+                }
+            }
+        }
+    }
+});
+</script>
 {% endblock %}
