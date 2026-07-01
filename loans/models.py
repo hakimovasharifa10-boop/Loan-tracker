@@ -39,8 +39,8 @@ class Loan(models.Model):
     def is_overdue(self):
         return self.end_date < timezone.now().date()
     
-    
-    def get_status(self):
+    @property
+    def status_label(self):
         if self.remaining_amount() <=0:
             return 'closed'
         elif self.end_date < timezone.now().date():

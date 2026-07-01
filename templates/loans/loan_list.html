@@ -1,112 +1,146 @@
-{% extends 'base.html' %}
-{% block title %}Loans - Loan Tracker TJ{% endblock %}
-
-{% block content %}
-
-{% if ai_answer %}
-<div class="ai-answer">
-    <strong>Advisor:</strong> {{ ai_answer }}
-</div>
-{% endif %}
-
-{% for loan in overdue_loans %}
+{% extends 'base.html' %} {% block title %}Loans - Loan Tracker TJ{% endblock %}
+{% block content %} {% if ai_answer %}
+<div class="ai-answer"><strong>Advisor:</strong> {{ ai_answer }}</div>
+{% endif %} {% for loan in overdue_loans %}
 <div class="alert-warning">
-    <strong>Overdue payment</strong>
-    <span>{{ loan.bank_name }} / {{ loan.monthly_payment }} TJS</span>
+  <strong>Overdue payment</strong>
+  <span>{{ loan.bank_name }} / {{ loan.monthly_payment }} TJS</span>
 </div>
 {% endfor %}
 
 <section class="page-hero">
-    <div>
-        <p class="eyebrow">Credit portfolio</p>
-        <h1 class="page-title">Loans</h1>
-        <p class="page-subtitle">Monitor balances, interest rates, monthly payments, and repayment progress.</p>
-    </div>
-    <a href="/loans/create/" class="btn btn-primary">Add loan</a>
+  <div>
+    <p class="eyebrow">Credit portfolio</p>
+    <h1 class="page-title">Loans</h1>
+    <p class="page-subtitle">
+      Monitor balances, interest rates, monthly payments, and repayment
+      progress.
+    </p>
+  </div>
+  <a href="/loans/create/" class="btn btn-primary">Add loan</a>
 </section>
 
 <div class="rates-row">
-    <div class="rate-card"><div class="rate-label">USD</div><div class="rate-value">{{ rates.USD }}</div></div>
-    <div class="rate-card"><div class="rate-label">RUB</div><div class="rate-value">{{ rates.RUB }}</div></div>
-    <div class="rate-card"><div class="rate-label">EUR</div><div class="rate-value">{{ rates.EUR }}</div></div>
+  <div class="rate-card">
+    <div class="rate-label">USD</div>
+    <div class="rate-value">{{ rates.USD }}</div>
+  </div>
+  <div class="rate-card">
+    <div class="rate-label">RUB</div>
+    <div class="rate-value">{{ rates.RUB }}</div>
+  </div>
+  <div class="rate-card">
+    <div class="rate-label">EUR</div>
+    <div class="rate-value">{{ rates.EUR }}</div>
+  </div>
 </div>
 
 <div class="loan-table-card card">
-    {% if loans %}
-    <table class="loan-table">
-        <thead>
-            <tr>
-                <th>Bank</th>
-                <th>Amount</th>
-                <th>Rate</th>
-                <th>Monthly payment</th>
-                <th>End date</th>
-                <th>Remaining</th>
-                <th>Status</th>
-                <th>Progress</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for loan in loans %}
-            <tr>
-                <td>
-                    <div class="entity">
-                        {% if loan.logo %}
-                            <img src="{{ loan.logo.url }}" class="entity-logo" alt="{{ loan.bank_name }}">
-                        {% else %}
-                            <div class="entity-logo entity-logo-fallback">{{ loan.bank_name|slice:":2"|upper }}</div>
-                        {% endif %}
-                        <div>
-                            <div class="entity-name">{{ loan.bank_name }}</div>
-                            {% if loan.notes %}
-                            <div class="entity-meta">{{ loan.notes }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </td>
-                <td class="amount-strong">{{ loan.amount }} TJS</td>
-                <td>{{ loan.interest_rate }}%</td>
-                <td>{{ loan.monthly_payment }} TJS</td>
-                <td>{{ loan.end_date }}</td>
-                <td>{{ loan.remaining_amount }} TJS</td>
-                <td>
-                    {% if loan.is_overdue %}
-                        <span class="badge badge-danger">Overdue</span>
-                    {% else %}
-                        <span class="badge badge-success">Active</span>
-                    {% endif %}
-                </td>
-                <td class="progress-cell">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width:{{ loan.progress_percent }}%"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span>{{ loan.paid_amount }} TJS</span>
-                        <span>{{ loan.progress_percent }}%</span>
-                    </div>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <a href="/loans/{{ loan.pk }}/edit/" class="btn btn-secondary btn-sm">Edit</a>
-                        <form method="post" action="/loans/{{ loan.pk }}/delete/" style="display:inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this loan?')">Delete</button>
-                        </form>
-                        <a href="/payments/create/" class="btn btn-success btn-sm">Payment</a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <div class="empty-state">
-        <h3>No loans yet</h3>
-        <p>Add your first loan to start monitoring balances and repayments.</p>
-        <a href="/loans/create/" class="btn btn-primary">Add first loan</a>
-    </div>
-    {% endif %}
+  {% if loans %}
+  <table class="loan-table">
+    <thead>
+      <tr>
+        <th>Bank</th>
+        <th>Amount</th>
+        <th>Rate</th>
+        <th>Monthly payment</th>
+        <th>End date</th>
+        <th>Remaining</th>
+        <th>Status</th>
+        <th>Progress</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for loan in loans %}
+      <tr>
+        <td>
+          <div class="entity">
+            {% if loan.logo %}
+            <img
+              src="{{ loan.logo.url }}"
+              class="entity-logo"
+              alt="{{ loan.bank_name }}"
+            />
+            {% else %}
+            <div class="entity-logo entity-logo-fallback">
+              {{ loan.bank_name|slice:":2"|upper }}
+            </div>
+            {% endif %}
+            <div>
+              <div class="entity-name">{{ loan.bank_name }}</div>
+              {% if loan.notes %}
+              <div class="entity-meta">{{ loan.notes }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </td>
+        <td class="amount-strong">{{ loan.amount }} TJS</td>
+        <td>{{ loan.interest_rate }}%</td>
+        <td>{{ loan.monthly_payment }} TJS</td>
+        <td>{{ loan.end_date }}</td>
+        <td>{{ loan.remaining_amount }} TJS</td>
+        <td>
+          {% if loan.status_label == 'closed' %}
+          <span class="badge badge-primary"> Closed</span>
+
+          {% elif loan.status_label == 'overdue' %}
+          <span class="badge badge-danger"> Overdue</span>
+
+          {% else %}
+          <span class="badge badge-success"> Active</span>
+
+          {% endif %}
+        </td>
+        <td class="progress-cell">
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              style="width:{{ loan.progress_percent }}%"
+            ></div>
+          </div>
+          <div class="progress-text">
+            <span>{{ loan.paid_amount }} TJS</span>
+            <span>{{ loan.progress_percent }}%</span>
+          </div>
+        </td>
+        <td>
+          <div class="table-actions">
+            <a
+              href="/loans/{{ loan.pk }}/edit/"
+              class="btn btn-secondary btn-sm"
+              >Edit</a
+            >
+            <form
+              method="post"
+              action="/loans/{{ loan.pk }}/delete/"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Delete this loan?');"
+              >
+                Delete
+              </button>
+            </form>
+            <a href="/payments/create/" class="btn btn-success btn-sm"
+              >Payment</a
+            >
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <h3>No loans yet</h3>
+    <p>Add your first loan to start monitoring balances and repayments.</p>
+    <a href="/loans/create/" class="btn btn-primary">Add first loan</a>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}
