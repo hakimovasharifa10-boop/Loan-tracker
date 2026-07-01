@@ -1,7 +1,16 @@
-{% extends 'base.html' %} {% block title %}Loans - Loan Tracker TJ{% endblock %}
-{% block content %} {% if ai_answer %}
-<div class="ai-answer"><strong>Advisor:</strong> {{ ai_answer }}</div>
-{% endif %} {% for loan in overdue_loans %}
+{% extends 'base.html' %}
+
+{% block title %}Loans - Loan Tracker TJ{% endblock %}
+
+{% block content %}
+
+{% if ai_answer %}
+<div class="ai-answer">
+  <strong>Advisor:</strong> {{ ai_answer }}
+</div>
+{% endif %}
+
+{% for loan in overdue_loans %}
 <div class="alert-warning">
   <strong>Overdue payment</strong>
   <span>{{ loan.bank_name }} / {{ loan.monthly_payment }} TJS</span>
@@ -13,8 +22,7 @@
     <p class="eyebrow">Credit portfolio</p>
     <h1 class="page-title">Loans</h1>
     <p class="page-subtitle">
-      Monitor balances, interest rates, monthly payments, and repayment
-      progress.
+      Monitor balances, interest rates, monthly payments, and repayment progress.
     </p>
   </div>
   <a href="/loans/create/" class="btn btn-primary">Add loan</a>
@@ -51,6 +59,7 @@
         <th>Actions</th>
       </tr>
     </thead>
+
     <tbody>
       {% for loan in loans %}
       <tr>
@@ -67,6 +76,7 @@
               {{ loan.bank_name|slice:":2"|upper }}
             </div>
             {% endif %}
+
             <div>
               <div class="entity-name">{{ loan.bank_name }}</div>
               {% if loan.notes %}
@@ -75,23 +85,23 @@
             </div>
           </div>
         </td>
+
         <td class="amount-strong">{{ loan.amount }} TJS</td>
         <td>{{ loan.interest_rate }}%</td>
         <td>{{ loan.monthly_payment }} TJS</td>
         <td>{{ loan.end_date }}</td>
         <td>{{ loan.remaining_amount }} TJS</td>
+
         <td>
           {% if loan.status_label == 'closed' %}
-          <span class="badge badge-primary"> Closed</span>
-
+          <span class="badge badge-primary">✅ Closed</span>
           {% elif loan.status_label == 'overdue' %}
-          <span class="badge badge-danger"> Overdue</span>
-
+          <span class="badge badge-danger">❌ Overdue</span>
           {% else %}
-          <span class="badge badge-success"> Active</span>
-
+          <span class="badge badge-success">🟢 Active</span>
           {% endif %}
         </td>
+
         <td class="progress-cell">
           <div class="progress-bar">
             <div
@@ -99,41 +109,44 @@
               style="width:{{ loan.progress_percent }}%"
             ></div>
           </div>
+
           <div class="progress-text">
             <span>{{ loan.paid_amount }} TJS</span>
             <span>{{ loan.progress_percent }}%</span>
           </div>
         </td>
+
         <td>
           <div class="table-actions">
-            <a
-              href="/loans/{{ loan.pk }}/edit/"
-              class="btn btn-secondary btn-sm"
-              >Edit</a
-            >
-            <form
-              method="post"
-              action="/loans/{{ loan.pk }}/delete/"
-              style="display: inline"
-            >
+            <a href="/loans/{{ loan.pk }}/edit/" class="btn btn-secondary btn-sm">
+              Edit
+            </a>
+
+            <a href="/loans/{{ loan.pk }}/schedule/" class="btn btn-primary btn-sm">
+              Schedule
+            </a>
+
+            <form method="post" action="/loans/{{ loan.pk }}/delete/" style="display:inline">
               {% csrf_token %}
               <button
                 type="submit"
                 class="btn btn-danger btn-sm"
-                onclick="return confirm('Delete this loan?');"
+                onclick="return confirm('Delete this loan?')"
               >
                 Delete
               </button>
             </form>
-            <a href="/payments/create/" class="btn btn-success btn-sm"
-              >Payment</a
-            >
+
+            <a href="/payments/create/" class="btn btn-success btn-sm">
+              Payment
+            </a>
           </div>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
   {% else %}
   <div class="empty-state">
     <h3>No loans yet</h3>
