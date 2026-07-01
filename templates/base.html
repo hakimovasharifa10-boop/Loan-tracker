@@ -19,13 +19,13 @@
 
       {% if request.user.is_authenticated %}
       <div class="nav-links">
-        <a href="/" class="nav-link">🏠 Home</a>
-        <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
-        <a href="/loans/" class="nav-link">🏦 My Loans</a>
-        <a href="/payments/" class="nav-link">💳 Payments</a>
-        <a href="/calculator/" class="nav-link">🧮 Calculator</a>
-        <a href="/goals/" class="nav-link">🎯 Goals</a>
-        <a href="/accounts/profile/" class="nav-link">👤 Profile</a>
+        <a href="/" class="nav-link">🏠 <span data-t="home">Home</span></a>
+        <a href="/dashboard/" class="nav-link">📊 <span data-t="dashboard">Dashboard</span></a>
+        <a href="/loans/" class="nav-link"> 🏦<span data-t="my_loans">My Loans</span></a>
+        <a href="/payments/" class="nav-link">💳 <span data-t="payments"> Payments</span></a>
+        <a href="/calculator/" class="nav-link">🧮 <span data-t="calculator"> Calculator</span></a>
+        <a href="/goals/" class="nav-link">🎯 <span data-t="goals"> Goals</span></a>
+        <a href="/accounts/profile/" class="nav-link">👤 <span data-t="profile">Profile </span></a>
       </div>
       <div class="nav-user">
         <div class="lang-switch">
@@ -96,64 +96,174 @@
 
     <div class="container">{% block content %}{% endblock %}</div>
 
-    <script>
-      const translations = {
-        en: {
-          dashboard: "Dashboard",
-          my_loans: "My Loans",
-          payments: "Payments",
-          calculator: "Calculator",
-          logout: "Logout",
-          login: "Log in",
-          register: "Get Started",
-          ask_ai: "Ask AI: Which loan should I pay first?",
-        },
-        ru: {
-          dashboard: "Главная",
-          my_loans: "Мои кредиты",
-          payments: "Платежи",
-          calculator: "Калькулятор",
-          logout: "Выйти",
-          login: "Войти",
-          register: "Начать",
-          ask_ai: "Спросить AI: Какой кредит закрыть первым?",
-        },
-      };
+  <script>
+const translations = {
+    en: {
+        // Navbar
+        'home': 'Home',
+        'dashboard': 'Dashboard',
+        'my_loans': 'My Loans',
+        'payments': 'Payments',
+        'calculator': 'Calculator',
+        'profile': 'Profile',
+        'goals': 'Goals',
+        'logout': 'Logout',
+        'login': 'Log in',
+        'register': 'Get Started',
+        
+        // Dashboard
+        'good_day': 'Good day',
+        'loan_overview': 'Here is your loan overview',
+        'total_debt': 'Total debt',
+        'already_paid': 'Already paid',
+        'next_payment': 'Next payment',
+        'active_loans': 'Active loans',
+        'remaining': 'Remaining',
+        'paid_off': 'Paid off',
+        'banks': 'Banks',
+        'recent_payments': 'Recent Payments',
+        'view_all': 'View all',
+        
+        // Loans
+        'my_loans_title': 'My Loans',
+        'add_loan': '+ Add Loan',
+        'edit': 'Edit',
+        'delete': 'Delete',
+        'cancel': 'Cancel',
+        'save': 'Save',
+        'overdue': 'Overdue!',
+        'active': 'Active',
+        
+        // Payments
+        'payment_history': 'Payment History',
+        'add_payment': '+ Add Payment',
+        'amount': 'Amount',
+        'date': 'Date',
+        'notes': 'Notes',
+        'actions': 'Actions',
+        
+        // Calculator
+        'loan_calculator': '🧮 Loan Calculator',
+        'loan_amount': 'Loan Amount (TJS)',
+        'interest_rate': 'Interest Rate',
+        'duration': 'Duration',
+        'monthly_payment': 'Monthly Payment',
+        'total_payment': 'Total Payment',
+        'overpayment': 'Overpayment',
+        
+        // Goals
+        'my_goals': '🎯 My Savings Goals',
+        'new_goal': '+ New Goal',
+        'goal_title': 'Goal title',
+        'target_amount': 'Target amount',
+        'target_date': 'Target date',
+        
+        // Buttons
+        'ask_ai': 'Ask AI: Which loan should I pay first?',
+        'ask_ai_btn': 'Ask AI ✨',
+        'back': '← Back',
+        'apply': 'Apply',
+        'reset': 'Reset',
+    },
+    ru: {
+        // Navbar
+        'home': 'Главная',
+        'dashboard': 'Панель',
+        'my_loans': 'Мои кредиты',
+        'payments': 'Платежи',
+        'calculator': 'Калькулятор',
+        'profile': 'Профиль',
+        'goals': 'Цели',
+        'logout': 'Выйти',
+        'login': 'Войти',
+        'register': 'Регистрация',
+        
+        
+        'good_day': 'Добрый день',
+        'loan_overview': 'Обзор ваших кредитов',
+        'total_debt': 'Общий долг',
+        'already_paid': 'Уже оплачено',
+        'next_payment': 'Следующий платёж',
+        'active_loans': 'Активные кредиты',
+        'remaining': 'Осталось',
+        'paid_off': 'Оплачено',
+        'banks': 'Банков',
+        'recent_payments': 'Последние платежи',
+        'view_all': 'Все',
+        
+        
+        'my_loans_title': 'Мои кредиты',
+        'add_loan': '+ Добавить кредит',
+        'edit': 'Изменить',
+        'delete': 'Удалить',
+        'cancel': 'Отмена',
+        'save': 'Сохранить',
+        'overdue': 'Просрочено!',
+        'active': 'Активный',
+        
+        
+        'payment_history': 'История платежей',
+        'add_payment': '+ Добавить платёж',
+        'amount': 'Сумма',
+        'date': 'Дата',
+        'notes': 'Заметки',
+        'actions': 'Действия',
+        
+        
+        'loan_calculator': '🧮 Калькулятор кредита',
+        'loan_amount': 'Сумма кредита (TJS)',
+        'interest_rate': 'Процентная ставка',
+        'duration': 'Срок',
+        'monthly_payment': 'Ежемесячный платёж',
+        'total_payment': 'Общая сумма',
+        'overpayment': 'Переплата',
+        
+        
+        'my_goals': '🎯 Мои цели накопления',
+        'new_goal': '+ Новая цель',
+        'goal_title': 'Название цели',
+        'target_amount': 'Целевая сумма',
+        'target_date': 'Целевая дата',
+        
+        
+        'ask_ai': 'Спросить AI: Какой кредит закрыть первым?',
+        'ask_ai_btn': 'Спросить AI ✨',
+        'back': '← Назад',
+        'apply': 'Применить',
+        'reset': 'Сбросить',
+    }
+};
 
-      function setLang(lang) {
-        localStorage.setItem("lang", lang);
+function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    
+  
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(lang.toUpperCase()));
+    });
+    
+    const t = translations[lang];
+    
+    // Переводим все элементы с data-t
+    document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (t[key]) {
+            el.textContent = t[key];
+        }
+    });
+    
+    // Переводим все placeholders с data-tp
+    document.querySelectorAll('[data-tp]').forEach(el => {
+        const key = el.getAttribute('data-tp');
+        if (t[key]) {
+            el.placeholder = t[key];
+        }
+    });
+}
 
-        document.querySelectorAll(".lang-btn").forEach((btn) => {
-          btn.classList.remove("active");
-          if (btn.textContent.includes(lang.toUpperCase())) {
-            btn.classList.add("active");
-          }
-        });
-
-        const t = translations[lang];
-        const map = {
-          '[data-t="dashboard"]': t.dashboard,
-          '[data-t="my_loans"]': t.my_loans,
-          '[data-t="payments"]': t.payments,
-          '[data-t="calculator"]': t.calculator,
-          '[data-t="logout"]': t.logout,
-          '[data-t="login"]': t.login,
-          '[data-t="register"]': t.register,
-        };
-        Object.entries(map).forEach(([sel, text]) => {
-          document
-            .querySelectorAll(sel)
-            .forEach((el) => (el.textContent = text));
-        });
-
-        const aiInput = document.querySelector(".ai-input");
-        if (aiInput) aiInput.placeholder = t.ask_ai;
-      }
-
-      const savedLang = localStorage.getItem("lang") || "en";
-      setLang(savedLang);
-    </script>
-
+const savedLang = localStorage.getItem('lang') || 'en';
+setLang(savedLang);
+</script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>

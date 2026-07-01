@@ -26,19 +26,17 @@ def get_exchange_rates():
 
 @login_required
 def dashboard_view(request):
-    loans    = Loan.objects.filter(user=request.user)
+    loans = Loan.objects.filter(user=request.user)
     payments = Payment.objects.filter(user=request.user)
-    today    = timezone.now().date()
-
-    # Статистика
-    total_debt    = sum(loan.remaining_amount() for loan in loans)
-    total_paid    = sum(p.amount for p in payments)
+    today = timezone.now().date()
+    total_debt  = sum(loan.remaining_amount() for loan in loans)
+    total_paid  = sum(p.amount for p in payments)
     active_loans  = loans.count()
 
-    # Просроченные кредиты
+
     overdue_loans = [loan for loan in loans if loan.end_date < today]
 
-    # Ближайший платёж
+    
     upcoming_loans = sorted(
         [loan for loan in loans if loan.end_date >= today],
         key=lambda x: x.end_date
@@ -68,7 +66,7 @@ def dashboard_view(request):
         banks_labels.append(loan.bank_name)
         banks_data.append(float(loan.remaining_amount()))
 
-    # Курс валют
+
     rates = get_exchange_rates()
 
     return render(request, 'dashboard/dashboard.html', {
