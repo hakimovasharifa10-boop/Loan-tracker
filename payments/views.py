@@ -31,6 +31,12 @@ def payment_create(request):
             payment = form.save(commit=False)
             payment.user = request.user
             payment.save()
+            
+            loan=payment.loan
+            
+            if loan.remaining_amount() <=0:
+                loan.status = 'closed'
+                loan.save()
             return redirect('payment_list')
     else:
         form = PaymentForm(user=request.user)
