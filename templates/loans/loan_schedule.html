@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block title %} {{ loan.bank_name }} Schedule {%
+endblock %} {% block content %}
+
+<section class="page-hero">
+  <div>
+    <p class="eyebrow">Payment Schedule</p>
+    <h1 class="page-title">{{ loan.bank_name }}</h1>
+    <p class="page-subtitle">Monthly repayment plan for this loan.</p>
+  </div>
+
+  <a href="{% url 'loan_list' %}" class="btn btn-secondary"> ← Back </a>
+</section>
+
+<div class="loan-table-card card">
+  <table class="loan-table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Payment Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for item in schedule %}
+      <tr>
+        <td>{{ item.month }}</td>
+
+        <td>{{ item.amount }} TJS</td>
+
+        <td>
+          {% if item.status == 'paid' %}
+          <span class="badge badge-success"> ✅ Paid </span>
+          {% else %}
+          <span class="badge badge-warning"> ⏳ Upcoming </span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
