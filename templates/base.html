@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en" id="html-root">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,52 +9,34 @@
   </head>
   <body>
     <nav class="navbar">
-      <a href="/" class="brand">
-        <div class="brand-icon">🏦</div>
+      <a href="/" class="brand" aria-label="Loan Tracker TJ">
+        <div class="brand-icon">LT</div>
         <div>
           <div class="brand-name">Loan Tracker TJ</div>
-          <div class="brand-sub">Smart Banking Assistant</div>
+          <div class="brand-sub">Credit portfolio management</div>
         </div>
       </a>
 
       {% if request.user.is_authenticated %}
       <div class="nav-links">
-        <a href="/" class="nav-link">🏠 <span data-t="home">Home</span></a>
-        <a href="/dashboard/" class="nav-link">📊 <span data-t="dashboard">Dashboard</span></a>
-        <a href="/loans/" class="nav-link"> 🏦<span data-t="my_loans">My Loans</span></a>
-        <a href="/payments/" class="nav-link">💳 <span data-t="payments"> Payments</span></a>
-        <a href="/calculator/" class="nav-link">🧮 <span data-t="calculator"> Calculator</span></a>
-        <a href="/goals/" class="nav-link">🎯 <span data-t="goals"> Goals</span></a>
-        <a href="/accounts/profile/" class="nav-link">👤 <span data-t="profile">Profile </span></a>
+        <a href="/" class="nav-link">Home</a>
+        <a href="/dashboard/" class="nav-link">Dashboard</a>
+        <a href="/loans/" class="nav-link">Loans</a>
+        <a href="/payments/" class="nav-link">Payments</a>
+        <a href="/calculator/" class="nav-link">Calculator</a>
+        <a href="/goals/" class="nav-link">Goals</a>
+        <a href="/accounts/profile/" class="nav-link">Profile</a>
       </div>
       <div class="nav-user">
         <div class="lang-switch">
-          <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
-          <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+          <button class="lang-btn active" type="button">EN</button>
+          <button class="lang-btn" type="button">RU</button>
         </div>
-        <a
-          href="/accounts/profile/"
-          style="
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-          "
-        >
+        <a href="/accounts/profile/" class="nav-profile">
           {% if request.user.avatar %}
-          <img
-            src="{{ request.user.avatar.url }}"
-            style="
-              width: 30px;
-              height: 30px;
-              border-radius: 50%;
-              object-fit: cover;
-            "
-          />
+          <img src="{{ request.user.avatar.url }}" class="nav-photo" alt="{{ request.user.username }}" />
           {% else %}
-          <div class="nav-avatar">
-            {{ request.user.username|slice:":2"|upper }}
-          </div>
+          <div class="nav-avatar">{{ request.user.username|slice:":2"|upper }}</div>
           {% endif %}
           <span class="nav-username">{{ request.user.username }}</span>
         </a>
@@ -65,205 +47,28 @@
         <a href="/" class="nav-link">Home</a>
       </div>
       <div class="nav-user">
-        <div class="lang-switch">
-          <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
-          <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
-        </div>
         <a href="/accounts/login/" class="nav-link">Log in</a>
-        <a href="/accounts/register/" class="btn btn-primary">Get Started →</a>
+        <a href="/accounts/register/" class="btn btn-primary">Get started</a>
       </div>
       {% endif %}
     </nav>
 
     {% if request.user.is_authenticated %}
     <div class="ai-bar">
-      <form
-        action="/loans/"
-        method="get"
-        style="display: flex; gap: 8px; width: 100%"
-      >
-        <div class="ai-dot"></div>
+      <form action="/loans/" method="get" class="ai-form">
+        <span class="ai-kicker">Advisor</span>
         <input
           type="text"
           name="ai_help"
           class="ai-input"
-          placeholder="Ask AI: Which loan should I pay first?"
+          placeholder="Ask which loan should be paid first"
         />
-        <button type="submit" class="ai-btn">Ask AI ✨</button>
+        <button type="submit" class="ai-btn">Analyze</button>
       </form>
     </div>
     {% endif %}
 
-    <div class="container">{% block content %}{% endblock %}</div>
-
-  <script>
-const translations = {
-    en: {
-        // Navbar
-        'home': 'Home',
-        'dashboard': 'Dashboard',
-        'my_loans': 'My Loans',
-        'payments': 'Payments',
-        'calculator': 'Calculator',
-        'profile': 'Profile',
-        'goals': 'Goals',
-        'logout': 'Logout',
-        'login': 'Log in',
-        'register': 'Get Started',
-        
-        // Dashboard
-        'good_day': 'Good day',
-        'loan_overview': 'Here is your loan overview',
-        'total_debt': 'Total debt',
-        'already_paid': 'Already paid',
-        'next_payment': 'Next payment',
-        'active_loans': 'Active loans',
-        'remaining': 'Remaining',
-        'paid_off': 'Paid off',
-        'banks': 'Banks',
-        'recent_payments': 'Recent Payments',
-        'view_all': 'View all',
-        
-        // Loans
-        'my_loans_title': 'My Loans',
-        'add_loan': '+ Add Loan',
-        'edit': 'Edit',
-        'delete': 'Delete',
-        'cancel': 'Cancel',
-        'save': 'Save',
-        'overdue': 'Overdue!',
-        'active': 'Active',
-        
-        // Payments
-        'payment_history': 'Payment History',
-        'add_payment': '+ Add Payment',
-        'amount': 'Amount',
-        'date': 'Date',
-        'notes': 'Notes',
-        'actions': 'Actions',
-        
-        // Calculator
-        'loan_calculator': '🧮 Loan Calculator',
-        'loan_amount': 'Loan Amount (TJS)',
-        'interest_rate': 'Interest Rate',
-        'duration': 'Duration',
-        'monthly_payment': 'Monthly Payment',
-        'total_payment': 'Total Payment',
-        'overpayment': 'Overpayment',
-        
-        // Goals
-        'my_goals': '🎯 My Savings Goals',
-        'new_goal': '+ New Goal',
-        'goal_title': 'Goal title',
-        'target_amount': 'Target amount',
-        'target_date': 'Target date',
-        
-        // Buttons
-        'ask_ai': 'Ask AI: Which loan should I pay first?',
-        'ask_ai_btn': 'Ask AI ✨',
-        'back': '← Back',
-        'apply': 'Apply',
-        'reset': 'Reset',
-    },
-    ru: {
-        // Navbar
-        'home': 'Главная',
-        'dashboard': 'Панель',
-        'my_loans': 'Мои кредиты',
-        'payments': 'Платежи',
-        'calculator': 'Калькулятор',
-        'profile': 'Профиль',
-        'goals': 'Цели',
-        'logout': 'Выйти',
-        'login': 'Войти',
-        'register': 'Регистрация',
-        
-        
-        'good_day': 'Добрый день',
-        'loan_overview': 'Обзор ваших кредитов',
-        'total_debt': 'Общий долг',
-        'already_paid': 'Уже оплачено',
-        'next_payment': 'Следующий платёж',
-        'active_loans': 'Активные кредиты',
-        'remaining': 'Осталось',
-        'paid_off': 'Оплачено',
-        'banks': 'Банков',
-        'recent_payments': 'Последние платежи',
-        'view_all': 'Все',
-        
-        
-        'my_loans_title': 'Мои кредиты',
-        'add_loan': '+ Добавить кредит',
-        'edit': 'Изменить',
-        'delete': 'Удалить',
-        'cancel': 'Отмена',
-        'save': 'Сохранить',
-        'overdue': 'Просрочено!',
-        'active': 'Активный',
-        
-        
-        'payment_history': 'История платежей',
-        'add_payment': '+ Добавить платёж',
-        'amount': 'Сумма',
-        'date': 'Дата',
-        'notes': 'Заметки',
-        'actions': 'Действия',
-        
-        
-        'loan_calculator': '🧮 Калькулятор кредита',
-        'loan_amount': 'Сумма кредита (TJS)',
-        'interest_rate': 'Процентная ставка',
-        'duration': 'Срок',
-        'monthly_payment': 'Ежемесячный платёж',
-        'total_payment': 'Общая сумма',
-        'overpayment': 'Переплата',
-        
-        
-        'my_goals': '🎯 Мои цели накопления',
-        'new_goal': '+ Новая цель',
-        'goal_title': 'Название цели',
-        'target_amount': 'Целевая сумма',
-        'target_date': 'Целевая дата',
-        
-        
-        'ask_ai': 'Спросить AI: Какой кредит закрыть первым?',
-        'ask_ai_btn': 'Спросить AI ✨',
-        'back': '← Назад',
-        'apply': 'Применить',
-        'reset': 'Сбросить',
-    }
-};
-
-function setLang(lang) {
-    localStorage.setItem('lang', lang);
-    
-  
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.includes(lang.toUpperCase()));
-    });
-    
-    const t = translations[lang];
-    
-    // Переводим все элементы с data-t
-    document.querySelectorAll('[data-t]').forEach(el => {
-        const key = el.getAttribute('data-t');
-        if (t[key]) {
-            el.textContent = t[key];
-        }
-    });
-    
-    // Переводим все placeholders с data-tp
-    document.querySelectorAll('[data-tp]').forEach(el => {
-        const key = el.getAttribute('data-tp');
-        if (t[key]) {
-            el.placeholder = t[key];
-        }
-    });
-}
-
-const savedLang = localStorage.getItem('lang') || 'en';
-setLang(savedLang);
-</script>
+    <main class="container">{% block content %}{% endblock %}</main>
     {% block extra_js %}{% endblock %}
   </body>
 </html>

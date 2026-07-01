@@ -1,141 +1,129 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard — Loan Tracker TJ{% endblock %}
+{% block title %}Dashboard - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
 {% for loan in overdue_loans %}
 <div class="alert-warning">
-    ⚠️ <strong>Overdue!</strong> {{ loan.bank_name }} — {{ loan.monthly_payment }} TJS — {{ loan.end_date }}
+    <strong>Overdue payment</strong>
+    <span>{{ loan.bank_name }} / {{ loan.monthly_payment }} TJS / {{ loan.end_date }}</span>
 </div>
 {% endfor %}
 
-<div style="margin-bottom:20px">
-    <h2 style="color:#e2e8f0;font-size:20px;font-weight:600;margin-bottom:4px">
-        Good day, {{ request.user.username }}! 👋
-    </h2>
-    <p style="color:#475569;font-size:13px">Here is your loan overview</p>
-</div>
+<section class="page-hero">
+    <div>
+        <p class="eyebrow">Portfolio overview</p>
+        <h1 class="page-title">Good day, {{ request.user.username }}</h1>
+        <p class="page-subtitle">Track your debt, payments, and upcoming obligations in one place.</p>
+    </div>
+    <a href="/loans/create/" class="btn btn-primary">Add loan</a>
+</section>
 
-<!-- Exchange rates -->
 <div class="rates-row">
     <div class="rate-card">
-        <div class="rate-label">🇺🇸 USD</div>
+        <div class="rate-label">USD</div>
         <div class="rate-value">{{ rates.USD }}</div>
     </div>
     <div class="rate-card">
-        <div class="rate-label">🇷🇺 RUB</div>
+        <div class="rate-label">RUB</div>
         <div class="rate-value">{{ rates.RUB }}</div>
     </div>
     <div class="rate-card">
-        <div class="rate-label">🇪🇺 EUR</div>
+        <div class="rate-label">EUR</div>
         <div class="rate-value">{{ rates.EUR }}</div>
     </div>
     <div class="rate-card">
-        <div class="rate-label">📅 Today</div>
-        <div class="rate-value" style="font-size:13px">{{ today }}</div>
+        <div class="rate-label">Report date</div>
+        <div class="rate-value rate-date">{{ today }}</div>
     </div>
 </div>
 
-<!-- Stats -->
 <div class="stats-grid">
     <div class="stat-card stat-danger">
         <div class="stat-label">Total debt</div>
         <div class="stat-value">{{ total_debt }} TJS</div>
-        <div class="stat-sub">Remaining</div>
+        <div class="stat-sub">Outstanding balance</div>
     </div>
     <div class="stat-card stat-success">
         <div class="stat-label">Already paid</div>
         <div class="stat-value">{{ total_paid }} TJS</div>
-        <div class="stat-sub">Paid off</div>
+        <div class="stat-sub">Recorded repayments</div>
     </div>
     <div class="stat-card stat-warning">
         <div class="stat-label">Next payment</div>
-        <div class="stat-value">
-            {% if next_payment %}{{ next_payment.end_date }}{% else %}—{% endif %}
-        </div>
-        <div class="stat-sub">
-            {% if next_payment %}{{ next_payment.bank_name }}{% endif %}
-        </div>
+        <div class="stat-value">{% if next_payment %}{{ next_payment.end_date }}{% else %}-{% endif %}</div>
+        <div class="stat-sub">{% if next_payment %}{{ next_payment.bank_name }}{% else %}No scheduled payment{% endif %}</div>
     </div>
     <div class="stat-card stat-info">
         <div class="stat-label">Active loans</div>
         <div class="stat-value">{{ active_loans }}</div>
-        <div class="stat-sub">Banks</div>
+        <div class="stat-sub">Open credit accounts</div>
     </div>
 </div>
 
-<!-- CHARTS -->
 <div class="charts-grid">
-
-    <!-- Bar chart -->
     <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between">
-            📊 Payments per month
+        <div class="card-title card-title-row">
+            Payments per month
             <span class="badge badge-info">Last 6 months</span>
         </div>
         <canvas id="barChart" height="100"></canvas>
     </div>
 
-    <!-- Pie chart -->
     <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between">
-            🥧 Debt by bank
+        <div class="card-title card-title-row">
+            Debt by bank
             <span class="badge badge-info">Distribution</span>
         </div>
         <canvas id="pieChart" height="100"></canvas>
     </div>
-
 </div>
 
-<!-- Loans + Recent payments -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-
+<div class="dashboard-grid">
     <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between">
-            My Loans
-            <a href="/loans/" style="color:#a78bfa;font-size:11px;text-decoration:none">View all →</a>
+        <div class="card-title card-title-row">
+            Loans
+            <a href="/loans/" class="text-link">View all</a>
         </div>
         {% for loan in loans %}
-        <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.04)">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    {% if loan.logo %}
-                        <img src="{{ loan.logo.url }}" style="width:24px;height:24px;border-radius:6px;object-fit:cover">
-                    {% else %}
-                        <div style="width:24px;height:24px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white">
-                            {{ loan.bank_name|slice:":2"|upper }}
-                        </div>
-                    {% endif %}
-                    <span style="color:#a78bfa;font-size:13px;font-weight:500">{{ loan.bank_name }}</span>
-                </div>
-                {% if loan.is_overdue %}
-                    <span class="badge badge-danger">Overdue!</span>
+        <div class="compact-loan-row">
+            <div class="entity">
+                {% if loan.logo %}
+                    <img src="{{ loan.logo.url }}" class="entity-logo" alt="{{ loan.bank_name }}">
                 {% else %}
-                    <span class="badge badge-info">Active</span>
+                    <div class="entity-logo entity-logo-fallback">{{ loan.bank_name|slice:":2"|upper }}</div>
                 {% endif %}
+                <div>
+                    <div class="entity-name">{{ loan.bank_name }}</div>
+                    <div class="entity-meta">{{ loan.interest_rate }}% / {{ loan.monthly_payment }} TJS/mo</div>
+                </div>
             </div>
-            <div style="color:#475569;font-size:11px;margin-bottom:6px">
-                {{ loan.interest_rate }}% · {{ loan.monthly_payment }} TJS/mo
-            </div>
+            {% if loan.is_overdue %}
+                <span class="badge badge-danger">Overdue</span>
+            {% else %}
+                <span class="badge badge-success">Active</span>
+            {% endif %}
             <div class="progress-bar">
-                <div class="progress-fill" style="width:{{ loan.progress_percent }}%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div>
+                <div class="progress-fill" style="width:{{ loan.progress_percent }}%"></div>
             </div>
             <div class="progress-text">
-                <span>Paid: {{ loan.paid_amount }} TJS</span>
+                <span>{{ loan.paid_amount }} TJS paid</span>
                 <span>{{ loan.progress_percent }}%</span>
             </div>
         </div>
         {% empty %}
-        <p style="color:#475569;font-size:13px;text-align:center;padding:16px 0">
-            No loans yet. <a href="/loans/create/" style="color:#a78bfa">Add first loan</a>
-        </p>
+        <div class="empty-state">
+            <h3>No loans yet</h3>
+            <p>Add your first loan to begin tracking repayment progress.</p>
+            <a href="/loans/create/" class="btn btn-primary">Add first loan</a>
+        </div>
         {% endfor %}
     </div>
 
     <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between">
-            Recent Payments
-            <a href="/payments/" style="color:#a78bfa;font-size:11px;text-decoration:none">View all →</a>
+        <div class="card-title card-title-row">
+            Recent payments
+            <a href="/payments/" class="text-link">View all</a>
         </div>
         {% for payment in recent_payments %}
         <div class="pay-row">
@@ -146,12 +134,13 @@
             <div class="pay-amount">+{{ payment.amount }} TJS</div>
         </div>
         {% empty %}
-        <p style="color:#475569;font-size:13px;text-align:center;padding:16px 0">
-            No payments yet. <a href="/payments/create/" style="color:#a78bfa">Add payment</a>
-        </p>
+        <div class="empty-state">
+            <h3>No payments yet</h3>
+            <p>Record repayments to keep your portfolio accurate.</p>
+            <a href="/payments/create/" class="btn btn-primary">Add payment</a>
+        </div>
         {% endfor %}
     </div>
-
 </div>
 
 {% endblock %}
@@ -159,13 +148,10 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// === BAR CHART — Payments per month ===
 const barCtx = document.getElementById('barChart').getContext('2d');
-
-// Создаём градиент для столбиков
 const gradient = barCtx.createLinearGradient(0, 0, 0, 300);
-gradient.addColorStop(0, 'rgba(139,92,246,0.8)');
-gradient.addColorStop(1, 'rgba(219,39,119,0.3)');
+gradient.addColorStop(0, 'rgba(20,83,45,0.88)');
+gradient.addColorStop(1, 'rgba(37,99,235,0.18)');
 
 new Chart(barCtx, {
     type: 'bar',
@@ -175,9 +161,9 @@ new Chart(barCtx, {
             label: 'TJS',
             data: {{ months_data|safe }},
             backgroundColor: gradient,
-            borderColor: '#a78bfa',
+            borderColor: '#14532d',
             borderWidth: 1,
-            borderRadius: 8,
+            borderRadius: 5,
         }]
     },
     options: {
@@ -185,10 +171,10 @@ new Chart(barCtx, {
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: 'rgba(7,2,15,0.95)',
-                titleColor: '#a78bfa',
-                bodyColor: '#e2e8f0',
-                borderColor: 'rgba(139,92,246,0.3)',
+                backgroundColor: '#ffffff',
+                titleColor: '#111827',
+                bodyColor: '#4b5563',
+                borderColor: '#e5e7eb',
                 borderWidth: 1,
                 padding: 10,
                 callbacks: {
@@ -199,19 +185,17 @@ new Chart(barCtx, {
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { color: '#64748b', font: { size: 10 } },
-                grid: { color: 'rgba(255,255,255,0.04)' }
+                ticks: { color: '#6b7280', font: { size: 10 } },
+                grid: { color: '#edf0f4' }
             },
             x: {
-                ticks: { color: '#64748b', font: { size: 11 } },
+                ticks: { color: '#6b7280', font: { size: 11 } },
                 grid: { display: false }
             }
         }
     }
 });
 
-
-// === PIE CHART — Debt by bank ===
 const pieCtx = document.getElementById('pieChart').getContext('2d');
 new Chart(pieCtx, {
     type: 'doughnut',
@@ -219,28 +203,29 @@ new Chart(pieCtx, {
         labels: {{ banks_labels|safe }},
         datasets: [{
             data: {{ banks_data|safe }},
-            backgroundColor: ['#7c3aed', '#db2777', '#f59e0b', '#0ea5e9', '#10b981', '#ef4444'],
-            borderColor: '#07020f',
+            backgroundColor: ['#14532d', '#1d4ed8', '#b45309', '#047857', '#b91c1c', '#475569'],
+            borderColor: '#ffffff',
             borderWidth: 2,
         }]
     },
     options: {
         responsive: true,
+        cutout: '64%',
         plugins: {
             legend: {
                 position: 'right',
                 labels: {
-                    color: '#94a3b8',
+                    color: '#6b7280',
                     font: { size: 11 },
                     padding: 10,
                     boxWidth: 10
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(7,2,15,0.95)',
-                titleColor: '#a78bfa',
-                bodyColor: '#e2e8f0',
-                borderColor: 'rgba(139,92,246,0.3)',
+                backgroundColor: '#ffffff',
+                titleColor: '#111827',
+                bodyColor: '#4b5563',
+                borderColor: '#e5e7eb',
                 borderWidth: 1,
                 padding: 10,
                 callbacks: {

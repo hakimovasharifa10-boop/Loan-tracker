@@ -1,93 +1,112 @@
 {% extends 'base.html' %}
-{% block title %}My Loans — Loan Tracker TJ{% endblock %}
+{% block title %}Loans - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
 {% if ai_answer %}
 <div class="ai-answer">
-    🤖 <strong style="color:#a78bfa">AI:</strong> {{ ai_answer }}
+    <strong>Advisor:</strong> {{ ai_answer }}
 </div>
 {% endif %}
 
 {% for loan in overdue_loans %}
 <div class="alert-warning">
-    ⚠️ <strong>Overdue!</strong> {{ loan.bank_name }} — {{ loan.monthly_payment }} TJS
+    <strong>Overdue payment</strong>
+    <span>{{ loan.bank_name }} / {{ loan.monthly_payment }} TJS</span>
 </div>
 {% endfor %}
 
-<!-- Exchange rates -->
+<section class="page-hero">
+    <div>
+        <p class="eyebrow">Credit portfolio</p>
+        <h1 class="page-title">Loans</h1>
+        <p class="page-subtitle">Monitor balances, interest rates, monthly payments, and repayment progress.</p>
+    </div>
+    <a href="/loans/create/" class="btn btn-primary">Add loan</a>
+</section>
+
 <div class="rates-row">
-    <div class="rate-card"><div class="rate-label">🇺🇸 USD</div><div class="rate-value">{{ rates.USD }}</div></div>
-    <div class="rate-card"><div class="rate-label">🇷🇺 RUB</div><div class="rate-value">{{ rates.RUB }}</div></div>
-    <div class="rate-card"><div class="rate-label">🇪🇺 EUR</div><div class="rate-value">{{ rates.EUR }}</div></div>
+    <div class="rate-card"><div class="rate-label">USD</div><div class="rate-value">{{ rates.USD }}</div></div>
+    <div class="rate-card"><div class="rate-label">RUB</div><div class="rate-value">{{ rates.RUB }}</div></div>
+    <div class="rate-card"><div class="rate-label">EUR</div><div class="rate-value">{{ rates.EUR }}</div></div>
 </div>
 
-<div class="page-header">
-    <h2 class="page-title">My Loans</h2>
-    <a href="/loans/create/" class="btn btn-primary">+ Add Loan</a>
-</div>
-
-{% for loan in loans %}
-<div class="loan-card">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-        <div style="display:flex;align-items:center;gap:10px">
-            {% if loan.logo %}
-                <img src="{{ loan.logo.url }}" style="width:36px;height:36px;border-radius:9px;object-fit:cover">
-            {% else %}
-                <div style="width:36px;height:36px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white">
-                    {{ loan.bank_name|slice:":2"|upper }}
-                </div>
-            {% endif %}
-            <div>
-                <div class="loan-bank">{{ loan.bank_name }}</div>
-                <div class="loan-amount">{{ loan.amount }} TJS</div>
-            </div>
-        </div>
-        <div style="text-align:right">
-            {% if loan.is_overdue %}
-                <span class="badge badge-danger">⚠ Overdue!</span>
-            {% else %}
-                <span class="badge badge-success">✓ Active</span>
-            {% endif %}
-        </div>
+<div class="loan-table-card card">
+    {% if loans %}
+    <table class="loan-table">
+        <thead>
+            <tr>
+                <th>Bank</th>
+                <th>Amount</th>
+                <th>Rate</th>
+                <th>Monthly payment</th>
+                <th>End date</th>
+                <th>Remaining</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+            <tr>
+                <td>
+                    <div class="entity">
+                        {% if loan.logo %}
+                            <img src="{{ loan.logo.url }}" class="entity-logo" alt="{{ loan.bank_name }}">
+                        {% else %}
+                            <div class="entity-logo entity-logo-fallback">{{ loan.bank_name|slice:":2"|upper }}</div>
+                        {% endif %}
+                        <div>
+                            <div class="entity-name">{{ loan.bank_name }}</div>
+                            {% if loan.notes %}
+                            <div class="entity-meta">{{ loan.notes }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+                <td class="amount-strong">{{ loan.amount }} TJS</td>
+                <td>{{ loan.interest_rate }}%</td>
+                <td>{{ loan.monthly_payment }} TJS</td>
+                <td>{{ loan.end_date }}</td>
+                <td>{{ loan.remaining_amount }} TJS</td>
+                <td>
+                    {% if loan.is_overdue %}
+                        <span class="badge badge-danger">Overdue</span>
+                    {% else %}
+                        <span class="badge badge-success">Active</span>
+                    {% endif %}
+                </td>
+                <td class="progress-cell">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:{{ loan.progress_percent }}%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>{{ loan.paid_amount }} TJS</span>
+                        <span>{{ loan.progress_percent }}%</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-actions">
+                        <a href="/loans/{{ loan.pk }}/edit/" class="btn btn-secondary btn-sm">Edit</a>
+                        <form method="post" action="/loans/{{ loan.pk }}/delete/" style="display:inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this loan?')">Delete</button>
+                        </form>
+                        <a href="/payments/create/" class="btn btn-success btn-sm">Payment</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <h3>No loans yet</h3>
+        <p>Add your first loan to start monitoring balances and repayments.</p>
+        <a href="/loans/create/" class="btn btn-primary">Add first loan</a>
     </div>
-
-    <div style="display:flex;gap:20px;margin-bottom:10px">
-        <span class="loan-meta">📊 {{ loan.interest_rate }}%/year</span>
-        <span class="loan-meta">💳 {{ loan.monthly_payment }} TJS/mo</span>
-        <span class="loan-meta">📅 Ends: {{ loan.end_date }}</span>
-        <span class="loan-meta">💰 Remaining: {{ loan.remaining_amount }} TJS</span>
-    </div>
-
-    <div class="progress-bar">
-        <div class="progress-fill" style="width:{{ loan.progress_percent }}%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div>
-    </div>
-    <div class="progress-text">
-        <span>Paid: {{ loan.paid_amount }} TJS</span>
-        <span>{{ loan.progress_percent }}%</span>
-    </div>
-
-    {% if loan.notes %}
-    <div style="margin-top:8px;font-size:12px;color:#475569">📝 {{ loan.notes }}</div>
     {% endif %}
-
-    <div style="display:flex;gap:6px;margin-top:12px">
-        <a href="/loans/{{ loan.pk }}/edit/" class="btn btn-secondary btn-sm">✏ Edit</a>
-        <form method="post" action="/loans/{{ loan.pk }}/delete/" style="display:inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger btn-sm"
-                onclick="return confirm('Delete this loan?')">🗑 Delete</button>
-        </form>
-        <a href="/payments/create/" class="btn btn-success btn-sm">+ Add Payment</a>
-    </div>
 </div>
-{% empty %}
-<div class="card" style="text-align:center;padding:40px">
-    <div style="font-size:48px;margin-bottom:16px">🏦</div>
-    <h3 style="color:#e2e8f0;margin-bottom:8px">No loans yet</h3>
-    <p style="color:#475569;font-size:13px;margin-bottom:20px">Add your first loan to start tracking</p>
-    <a href="/loans/create/" class="btn btn-primary">+ Add First Loan</a>
-</div>
-{% endfor %}
 
 {% endblock %}

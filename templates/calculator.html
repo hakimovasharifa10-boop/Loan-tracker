@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Loan Calculator — Loan Tracker TJ{% endblock %}
+{% block title %}Loan Calculator - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <h2 class="page-title">🧮 Loan Calculator</h2>
-</div>
+<section class="page-hero">
+    <div>
+        <p class="eyebrow">Credit planning</p>
+        <h1 class="page-title">Loan calculator</h1>
+        <p class="page-subtitle">Estimate monthly payment, total repayment, and interest cost.</p>
+    </div>
+</section>
 
 <div class="calc-grid">
-    <!-- LEFT: inputs -->
     <div class="card">
-        <div class="card-title">Loan Parameters</div>
+        <div class="card-title">Loan parameters</div>
 
         <div class="form-group">
-            <label class="form-label">Loan Amount (TJS)</label>
+            <label class="form-label">Loan amount (TJS)</label>
             <input type="number" id="amount" class="form-input" value="20000" oninput="calculate()">
             <input type="range" id="s-amount" min="1000" max="200000" step="1000" value="20000" class="calc-slider" oninput="document.getElementById('amount').value=this.value;calculate()">
             <div class="slider-labels"><span>1,000</span><span>200,000</span></div>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Interest Rate (% per year)</label>
+            <label class="form-label">Interest rate (% per year)</label>
             <input type="number" id="rate" class="form-input" value="18" step="0.1" oninput="calculate()">
             <input type="range" id="s-rate" min="1" max="50" step="0.5" value="18" class="calc-slider" oninput="document.getElementById('rate').value=this.value;calculate()">
             <div class="slider-labels"><span>1%</span><span>50%</span></div>
@@ -34,12 +37,11 @@
         </div>
 
         <div class="ai-tip-box">
-            <div class="ai-tip-title">💡 AI Tip</div>
+            <div class="ai-tip-title">Advisor note</div>
             <div class="ai-tip-text" id="tip">Loading...</div>
         </div>
     </div>
 
-    <!-- RIGHT: results -->
     <div class="calc-right">
         <div class="card">
             <div class="card-title">Results</div>
@@ -47,22 +49,22 @@
             <div class="calc-results">
                 <div class="calc-result-item result-primary">
                     <div>
-                        <div class="result-label">Monthly Payment</div>
-                        <div class="result-sub">You pay every month</div>
+                        <div class="result-label">Monthly payment</div>
+                        <div class="result-sub">Estimated installment</div>
                     </div>
                     <div class="result-value result-purple" id="r-monthly">0 TJS</div>
                 </div>
                 <div class="calc-result-item">
                     <div>
-                        <div class="result-label">Total Payment</div>
-                        <div class="result-sub">Amount + interest</div>
+                        <div class="result-label">Total repayment</div>
+                        <div class="result-sub">Principal plus interest</div>
                     </div>
                     <div class="result-value" id="r-total">0 TJS</div>
                 </div>
                 <div class="calc-result-item result-danger">
                     <div>
-                        <div class="result-label">Overpayment</div>
-                        <div class="result-sub">Extra for interest</div>
+                        <div class="result-label">Interest cost</div>
+                        <div class="result-sub">Amount above principal</div>
                     </div>
                     <div class="result-value result-red" id="r-over">0 TJS</div>
                 </div>
@@ -85,7 +87,7 @@
         </div>
 
         <div class="card">
-            <div class="card-title">Payment Schedule</div>
+            <div class="card-title">Payment schedule</div>
             <div class="schedule-wrap" id="schedule">
                 <div class="schedule-header">
                     <span>#</span>
@@ -128,10 +130,10 @@ function calculate() {
     document.getElementById('r-duration').textContent  = months    + ' mo';
 
     let tip = '';
-    if (rate > 25)            tip = 'This interest rate is very high! Try to negotiate a lower rate.';
-    else if (months > 36)     tip = 'Long term means more overpayment. Pay extra monthly to close faster.';
-    else if (over/amount>0.3) tip = 'You will overpay more than 30%. Consider a shorter loan term.';
-    else                      tip = 'Good parameters! Your overpayment is reasonable.';
+    if (rate > 25)            tip = 'The interest rate is high. Consider negotiating or comparing offers.';
+    else if (months > 36)     tip = 'A longer term lowers the monthly payment but increases total interest.';
+    else if (over/amount>0.3) tip = 'Interest cost is above 30% of principal. A shorter term may reduce it.';
+    else                      tip = 'The selected parameters are within a reasonable repayment range.';
     document.getElementById('tip').textContent = tip;
 
     const sched = document.getElementById('schedule');

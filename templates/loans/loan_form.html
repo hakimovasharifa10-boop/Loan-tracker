@@ -1,69 +1,65 @@
 {% extends 'base.html' %}
-{% block title %}{% if loan %}Edit Loan{% else %}Add Loan{% endif %} — Loan Tracker TJ{% endblock %}
+{% block title %}{% if loan %}Edit Loan{% else %}Add Loan{% endif %} - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <h2 class="page-title">{% if loan %}✏ Edit Loan{% else %}➕ Add New Loan{% endif %}</h2>
-    <a href="/loans/" class="btn btn-secondary">← Back</a>
-</div>
+<section class="page-hero">
+    <div>
+        <p class="eyebrow">Loan record</p>
+        <h1 class="page-title">{% if loan %}Edit loan{% else %}Add new loan{% endif %}</h1>
+        <p class="page-subtitle">Enter the loan details exactly as they appear in the bank agreement.</p>
+    </div>
+    <a href="/loans/" class="btn btn-secondary">Back to loans</a>
+</section>
 
 {% if not loan %}
-<!-- Loan type cards -->
 <div class="loan-types-section">
-    <div class="section-mini-title">Choose loan type:</div>
+    <div class="section-mini-title">Select a loan template</div>
     <div class="loan-types-grid">
-
         <div class="loan-type-card" onclick="selectType('consumer', 15, 1000, 50000, 3, 36)">
-            <div class="loan-type-icon">🛍️</div>
-            <div class="loan-type-name">Consumer Loan</div>
+            <div class="loan-type-name">Consumer loan</div>
             <div class="loan-type-info">
-                <div class="info-row"><span>Rate:</span> <strong>15%</strong></div>
-                <div class="info-row"><span>Amount:</span> <strong>1K - 50K TJS</strong></div>
-                <div class="info-row"><span>Term:</span> <strong>3-36 mo</strong></div>
+                <div class="info-row"><span>Rate</span> <strong>15%</strong></div>
+                <div class="info-row"><span>Amount</span> <strong>1K - 50K TJS</strong></div>
+                <div class="info-row"><span>Term</span> <strong>3-36 mo</strong></div>
             </div>
         </div>
 
         <div class="loan-type-card" onclick="selectType('auto', 12, 10000, 150000, 12, 60)">
-            <div class="loan-type-icon">🚗</div>
-            <div class="loan-type-name">Auto Loan</div>
+            <div class="loan-type-name">Auto loan</div>
             <div class="loan-type-info">
-                <div class="info-row"><span>Rate:</span> <strong>12%</strong></div>
-                <div class="info-row"><span>Amount:</span> <strong>10K - 150K TJS</strong></div>
-                <div class="info-row"><span>Term:</span> <strong>12-60 mo</strong></div>
+                <div class="info-row"><span>Rate</span> <strong>12%</strong></div>
+                <div class="info-row"><span>Amount</span> <strong>10K - 150K TJS</strong></div>
+                <div class="info-row"><span>Term</span> <strong>12-60 mo</strong></div>
             </div>
         </div>
 
         <div class="loan-type-card" onclick="selectType('mortgage', 8, 50000, 500000, 24, 240)">
-            <div class="loan-type-icon">🏠</div>
             <div class="loan-type-name">Mortgage</div>
             <div class="loan-type-info">
-                <div class="info-row"><span>Rate:</span> <strong>8%</strong></div>
-                <div class="info-row"><span>Amount:</span> <strong>50K - 500K TJS</strong></div>
-                <div class="info-row"><span>Term:</span> <strong>24-240 mo</strong></div>
+                <div class="info-row"><span>Rate</span> <strong>8%</strong></div>
+                <div class="info-row"><span>Amount</span> <strong>50K - 500K TJS</strong></div>
+                <div class="info-row"><span>Term</span> <strong>24-240 mo</strong></div>
             </div>
         </div>
 
         <div class="loan-type-card" onclick="selectType('business', 18, 5000, 200000, 6, 60)">
-            <div class="loan-type-icon">💼</div>
-            <div class="loan-type-name">Business Loan</div>
+            <div class="loan-type-name">Business loan</div>
             <div class="loan-type-info">
-                <div class="info-row"><span>Rate:</span> <strong>18%</strong></div>
-                <div class="info-row"><span>Amount:</span> <strong>5K - 200K TJS</strong></div>
-                <div class="info-row"><span>Term:</span> <strong>6-60 mo</strong></div>
+                <div class="info-row"><span>Rate</span> <strong>18%</strong></div>
+                <div class="info-row"><span>Amount</span> <strong>5K - 200K TJS</strong></div>
+                <div class="info-row"><span>Term</span> <strong>6-60 mo</strong></div>
             </div>
         </div>
-
     </div>
 </div>
 {% endif %}
 
-<!-- Loan form -->
 <div class="card form-card">
-    <div class="card-title">📝 Loan Details</div>
+    <div class="card-title">Loan details</div>
 
     {% if error %}
-        <div class="alert-error">⚠️ {{ error }}</div>
+        <div class="alert-error">{{ error }}</div>
     {% endif %}
 
     <form method="post" enctype="multipart/form-data">
@@ -71,63 +67,47 @@
 
         <div class="form-grid">
             <div class="form-group">
-                <label class="form-label">🏦 Bank Name</label>
-                <input type="text" name="bank_name" class="form-input"
-                       placeholder="e.g. Amonatbank"
-                       value="{{ loan.bank_name }}">
+                <label class="form-label">Bank name</label>
+                <input type="text" name="bank_name" class="form-input" placeholder="Amonatbank" value="{{ loan.bank_name }}">
             </div>
             <div class="form-group">
-                <label class="form-label">🖼️ Bank Logo</label>
+                <label class="form-label">Bank logo</label>
                 {% if loan.logo %}
-                    <div style="margin-bottom:8px">
-                        <img src="{{ loan.logo.url }}"
-                             style="width:40px;height:40px;border-radius:8px;object-fit:cover">
+                    <div class="current-logo">
+                        <img src="{{ loan.logo.url }}" class="entity-logo" alt="{{ loan.bank_name }}">
                     </div>
                 {% endif %}
-                <input type="file" name="logo" class="form-input"
-                       accept="image/*" style="padding:6px">
+                <input type="file" name="logo" class="form-input" accept="image/*">
             </div>
             <div class="form-group">
-                <label class="form-label">💰 Loan Amount (TJS)</label>
-                <input type="number" id="amount" name="amount" class="form-input"
-                       placeholder="25000" step="0.01"
-                       value="{{ loan.amount }}">
+                <label class="form-label">Loan amount (TJS)</label>
+                <input type="number" id="amount" name="amount" class="form-input" placeholder="25000" step="0.01" value="{{ loan.amount }}">
             </div>
             <div class="form-group">
-                <label class="form-label">📊 Interest Rate (%)</label>
-                <input type="number" id="rate" name="interest_rate" class="form-input"
-                       placeholder="18" step="0.1"
-                       value="{{ loan.interest_rate }}">
+                <label class="form-label">Interest rate (%)</label>
+                <input type="number" id="rate" name="interest_rate" class="form-input" placeholder="18" step="0.1" value="{{ loan.interest_rate }}">
             </div>
             <div class="form-group">
-                <label class="form-label">💳 Monthly Payment (TJS)</label>
-                <input type="number" name="monthly_payment" class="form-input"
-                       placeholder="1500" step="0.01"
-                       value="{{ loan.monthly_payment }}">
+                <label class="form-label">Monthly payment (TJS)</label>
+                <input type="number" name="monthly_payment" class="form-input" placeholder="1500" step="0.01" value="{{ loan.monthly_payment }}">
             </div>
             <div class="form-group">
-                <label class="form-label">📅 Start Date</label>
-                <input type="date" name="start_date" class="form-input"
-                       value="{{ loan.start_date|date:'Y-m-d' }}">
+                <label class="form-label">Start date</label>
+                <input type="date" name="start_date" class="form-input" value="{{ loan.start_date|date:'Y-m-d' }}">
             </div>
             <div class="form-group">
-                <label class="form-label">📅 End Date</label>
-                <input type="date" name="end_date" class="form-input"
-                       value="{{ loan.end_date|date:'Y-m-d' }}">
+                <label class="form-label">End date</label>
+                <input type="date" name="end_date" class="form-input" value="{{ loan.end_date|date:'Y-m-d' }}">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="form-label">📝 Notes (optional)</label>
-            <input type="text" name="notes" class="form-input"
-                   placeholder="Any notes about this loan..."
-                   value="{{ loan.notes }}">
+            <label class="form-label">Notes</label>
+            <input type="text" name="notes" class="form-input" placeholder="Optional internal note" value="{{ loan.notes }}">
         </div>
 
-        <div style="display:flex;gap:10px;margin-top:8px">
-            <button type="submit" class="btn btn-primary">
-                {% if loan %}💾 Save Changes{% else %}➕ Add Loan{% endif %}
-            </button>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{% if loan %}Save changes{% else %}Add loan{% endif %}</button>
             <a href="/loans/" class="btn btn-secondary">Cancel</a>
         </div>
     </form>

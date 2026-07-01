@@ -1,275 +1,134 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Tracker TJ — Smart Banking Assistant</title>
+    <title>Loan Tracker TJ - Smart loan dashboard</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-<body>
-<canvas id="c"></canvas>
-<div class="orb o1"></div>
-<div class="orb o2"></div>
-
-<!-- NAVBAR -->
-<nav class="home-nav">
+<body class="home-body">
+<nav class="home-nav glass-nav">
     <a href="/" class="home-brand">
-        <div class="home-bi">🏦</div>
+        <div class="home-bi">LT</div>
         <div>
             <div class="home-bn">Loan Tracker TJ</div>
-            <div class="home-bs" data-t="brand_sub">Smart Banking Assistant</div>
+            <div class="home-bs">Smart loan dashboard</div>
         </div>
     </a>
     <div class="home-nav-links">
-        <a href="/" class="home-nav-link home-nav-active">🏠 <span data-t="home">Home</span></a>
-        <a href="/dashboard/" class="home-nav-link">📊 <span data-t="dashboard">Dashboard</span></a>
-        <a href="/loans/" class="home-nav-link">🏦 <span data-t="my_loans">My Loans</span></a>
-        <a href="/payments/" class="home-nav-link">💳 <span data-t="payments">Payments</span></a>
-        <a href="/goals/" class="home-nav-link">🎯 <span data-t="goals">Goals</span></a>
-        <a href="/calculator/" class="home-nav-link">🧮 <span data-t="calculator">Calculator</span></a>
+        <a href="/" class="home-nav-link home-nav-active">Home</a>
+        <a href="/dashboard/" class="home-nav-link">Dashboard</a>
+        <a href="/loans/" class="home-nav-link">Loans</a>
+        <a href="/payments/" class="home-nav-link">Payments</a>
+        <a href="/calculator/" class="home-nav-link">Calculator</a>
     </div>
     <div class="home-nav-right">
-        <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
-        <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
-        <a href="/accounts/login/" class="btn-login" data-t="login">Log in</a>
-        <a href="/accounts/register/" class="btn-started" data-t="register">Get Started →</a>
+        <a href="/accounts/login/" class="btn-login">Log in</a>
+        <a href="/accounts/register/" class="btn-started">Get started</a>
     </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-    <div class="hero-left">
-        <div class="hero-title">
-            <span data-t="hero_title_1">Manage your loans</span><br>
-            <span class="grad" data-t="hero_title_2">smarter with AI</span>
+<main class="modern-home">
+    <section class="modern-hero">
+        <div class="hero-copy">
+            <p class="hero-kicker">Loan Tracker TJ</p>
+            <h1>Control every loan from one modern banking workspace.</h1>
+            <p>
+                Track balances, monthly payments, overdue risks, and repayment progress with a clean dashboard built for personal finance in Tajikistan.
+            </p>
+            <div class="hero-btns">
+                <a href="/accounts/register/" class="btn btn-primary">Create account</a>
+                <a href="/dashboard/" class="btn btn-secondary">View dashboard</a>
+            </div>
         </div>
-        <div class="hero-sub" data-t="hero_sub">
-            Add loans from any bank, track payments and get AI-powered advice — all in one place. Never miss a payment again.
-        </div>
-        <div class="hero-btns">
-            <a href="/accounts/register/" class="btn-main" data-t="btn_start">Start for Free ✨</a>
-            <a href="#features" class="btn-ghost" data-t="btn_demo">Learn More →</a>
-        </div>
-    </div>
 
-    <div class="hero-right" id="hr">
-        <div class="card-scene">
-            <div class="card-3d">
-                <!-- FRONT -->
-                <div class="card-front">
-                    <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                        <div style="font-size:24px;font-weight:800;color:white;letter-spacing:1px">LT</div>
-                        <div class="card-chip"></div>
-                    </div>
-                    <div class="card-number">**** **** **** 4821</div>
-                    <div style="display:flex;justify-content:space-between;align-items:flex-end">
-                        <div>
-                            <div class="card-holder-label" data-t="card_holder">Card Holder</div>
-                            <div class="card-holder-name">Sharifa H.</div>
-                        </div>
-                        <div>
-                            <div class="card-exp-label" data-t="expires">Expires</div>
-                            <div class="card-exp-val">12/28</div>
-                        </div>
-                        <div style="font-size:22px;opacity:0.7">📶</div>
-                    </div>
+        <div class="hero-visual">
+            <div class="dashboard-preview">
+                <div class="preview-top">
+                    <span>Credit overview</span>
+                    <strong>Active</strong>
                 </div>
-                <!-- BACK -->
-                <div class="card-back">
-                    <div class="card-back-strip"></div>
-                    <div class="card-cvv">
-                        <div class="card-cvv-label">CVV</div>
-                        <div class="card-cvv-val">***</div>
+                <div class="preview-balance">
+                    <span>Total debt</span>
+                    <strong>128,400 TJS</strong>
+                </div>
+                <div class="preview-bars">
+                    <div><span style="width:72%"></span></div>
+                    <div><span style="width:46%"></span></div>
+                    <div><span style="width:58%"></span></div>
+                </div>
+            </div>
+
+            <div class="card-scene premium-card-scene">
+                <div class="card-3d">
+                    <div class="card-front premium-card">
+                        <div class="card-topline">
+                            <span>Loan Tracker</span>
+                            <span>Platinum</span>
+                        </div>
+                        <div class="card-chip"></div>
+                        <div class="card-number">4821  0944  6720  1188</div>
+                        <div class="card-footer">
+                            <div>
+                                <div class="card-holder-label">Client</div>
+                                <div class="card-holder-name">PRIVATE USER</div>
+                            </div>
+                            <div>
+                                <div class="card-exp-label">Valid</div>
+                                <div class="card-exp-val">12/28</div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Loan Tracker TJ</div>
-                        <div class="card-circles">
-                            <div class="card-circle1"></div>
-                            <div class="card-circle2"></div>
+                    <div class="card-back premium-card premium-card-back">
+                        <div class="card-back-strip"></div>
+                        <div class="card-cvv">
+                            <div class="card-cvv-label">Security</div>
+                            <div class="card-cvv-val">***</div>
+                        </div>
+                        <div class="card-back-note">
+                            Smart tracking for loans, payments, and financial goals.
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- DIVIDER -->
-<div class="divider" id="features">
-    <div class="div-line"></div>
-    <div class="div-text" data-t="everything">✨ Everything you need</div>
-    <div class="div-line"></div>
-</div>
+            <div class="floating-stat stat-one">
+                <span>Next payment</span>
+                <strong>1,450 TJS</strong>
+            </div>
+            <div class="floating-stat stat-two">
+                <span>Paid this month</span>
+                <strong>4,900 TJS</strong>
+            </div>
+        </div>
+    </section>
 
-<!-- FEATURES -->
-<div class="features-section">
-    <div class="section-title">
-        <h2><span data-t="why_choose">Why choose</span> <span class="grad">Loan Tracker TJ?</span></h2>
-        <p data-t="why_sub">The smartest way to track and manage all your bank loans in one place</p>
-    </div>
-    <div class="features-grid">
-        <div class="feat-card fc1">
-            <div class="feat-icon fi1">🤖</div>
-            <div class="feat-title" data-t="f1">AI Financial Advisor</div>
-            <span class="feat-badge fb1" data-t="f1_badge">Powered by AI</span>
+    <section class="experience-band">
+        <div class="experience-copy">
+            <p class="hero-kicker">Workspace</p>
+            <h2>Designed for real repayment decisions, not just pretty charts.</h2>
+            <p>Loan Tracker TJ brings the daily actions into one focused surface: what you owe, what is due next, and where your money is already going.</p>
         </div>
-        <div class="feat-card fc2">
-            <div class="feat-icon fi2">💱</div>
-            <div class="feat-title" data-t="f2">Live Exchange Rates</div>
-            <span class="feat-badge fb2" data-t="f2_badge">Live data</span>
+        <div class="experience-grid">
+            <div class="feature-item feature-large">
+            <h3>Dashboard</h3>
+            <p>See your full loan portfolio, debt distribution, and upcoming payments.</p>
         </div>
-        <div class="feat-card fc3">
-            <div class="feat-icon fi3">⚠️</div>
-            <div class="feat-title" data-t="f3">Overdue Warnings</div>
-            <span class="feat-badge fb3" data-t="f3_badge">Smart alerts</span>
+        <div class="feature-item">
+            <h3>Loans</h3>
+            <p>Manage bank, interest rate, repayment date, and progress for each loan.</p>
         </div>
-        <div class="feat-card fc4">
-            <div class="feat-icon fi4">🧮</div>
-            <div class="feat-title" data-t="f4">Loan Calculator</div>
-            <span class="feat-badge fb4" data-t="f4_badge">Instant results</span>
+        <div class="feature-item">
+            <h3>Payments</h3>
+            <p>Record repayments and keep a clean financial history by bank.</p>
         </div>
-    </div>
-    <div class="bottom-stats">
-        <div class="bs-card">
-            <div class="bs-value" id="s1">0</div>
-            <div class="bs-label" data-t="stat1">Happy users in Tajikistan</div>
+        <div class="feature-item feature-accent">
+            <h3>Calculator</h3>
+            <p>Estimate monthly payment and total interest before making decisions.</p>
         </div>
-        <div class="bs-card">
-            <div class="bs-value">100%</div>
-            <div class="bs-label" data-t="stat2">Free forever</div>
         </div>
-        <div class="bs-card">
-            <div class="bs-value" id="s3">0</div>
-            <div class="bs-label" data-t="stat3">Loans tracked</div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Particles
-const c=document.getElementById('c'),ctx=c.getContext('2d');
-function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
-resize();window.addEventListener('resize',resize);
-const pts=[];
-for(let i=0;i<70;i++)pts.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+0.3,dx:(Math.random()-0.5)*0.25,dy:(Math.random()-0.5)*0.25,h:Math.random()>0.5?270:320});
-const stars=[];
-for(let i=0;i<100;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.2,a:Math.random(),da:Math.random()*0.02+0.005});
-function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.a*0.5})`;ctx.fill();});
-    for(let i=0;i<pts.length;i++){
-        const p=pts[i];
-        for(let j=i+1;j<pts.length;j++){const q=pts[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(139,92,246,${0.07*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke();}}
-        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`hsla(${p.h},70%,65%,0.35)`;ctx.fill();
-        p.x+=p.dx;p.y+=p.dy;
-        if(p.x<0||p.x>c.width)p.dx*=-1;if(p.y<0||p.y>c.height)p.dy*=-1;
-    }
-    requestAnimationFrame(draw);
-}
-draw();
-
-// Floating coins
-const items=['💵','🪙','💰','💵','🪙','💵','🪙','💰'];
-const hr=document.getElementById('hr');
-function spawn(){
-    const el=document.createElement('div');
-    el.className='floating-item';
-    el.textContent=items[Math.floor(Math.random()*items.length)];
-    el.style.cssText=`left:${Math.random()*420}px;bottom:${Math.random()*30}px;font-size:${14+Math.random()*14}px;color:${Math.random()>0.5?'#fcd34d':'#a78bfa'};animation:rise ${3+Math.random()*3}s linear forwards;text-shadow:0 0 10px rgba(252,211,77,0.5);position:absolute;pointer-events:none;z-index:20;font-weight:700;opacity:0`;
-    hr.appendChild(el);
-    setTimeout(()=>el.remove(),6000);
-}
-setInterval(spawn,600);
-
-// Count up
-function countUp(id,target){
-    let v=0;const el=document.getElementById(id);if(!el)return;
-    const t=setInterval(()=>{v+=target/80;if(v>=target){v=target;clearInterval(t);}el.textContent=Math.round(v).toLocaleString();},16);
-}
-setTimeout(()=>{countUp('s1',1240);countUp('s3',3500);},400);
-
-// === ПОЛНЫЙ ПЕРЕВОДЧИК ===
-const translations = {
-    en: {
-        brand_sub: 'Smart Banking Assistant',
-        home: 'Home',
-        dashboard: 'Dashboard',
-        my_loans: 'My Loans',
-        payments: 'Payments',
-        goals: 'Goals',
-        calculator: 'Calculator',
-        login: 'Log in',
-        register: 'Get Started →',
-        hero_title_1: 'Manage your loans',
-        hero_title_2: 'smarter with AI',
-        hero_sub: 'Add loans from any bank, track payments and get AI-powered advice — all in one place. Never miss a payment again.',
-        btn_start: 'Start for Free ✨',
-        btn_demo: 'Learn More →',
-        everything: '✨ Everything you need',
-        why_choose: 'Why choose',
-        why_sub: 'The smartest way to track and manage all your bank loans in one place',
-        f1: 'AI Financial Advisor',
-        f2: 'Live Exchange Rates',
-        f3: 'Overdue Warnings',
-        f4: 'Loan Calculator',
-        f1_badge: 'Powered by AI',
-        f2_badge: 'Live data',
-        f3_badge: 'Smart alerts',
-        f4_badge: 'Instant results',
-        stat1: 'Happy users in Tajikistan',
-        stat2: 'Free forever',
-        stat3: 'Loans tracked',
-        card_holder: 'Card Holder',
-        expires: 'Expires',
-    },
-    ru: {
-        brand_sub: 'Умный банковский помощник',
-        home: 'Главная',
-        dashboard: 'Панель',
-        my_loans: 'Мои кредиты',
-        payments: 'Платежи',
-        goals: 'Цели',
-        calculator: 'Калькулятор',
-        login: 'Войти',
-        register: 'Начать →',
-        hero_title_1: 'Управляйте кредитами',
-        hero_title_2: 'умнее с AI',
-        hero_sub: 'Добавляйте кредиты из любого банка, отслеживайте платежи и получайте советы AI — всё в одном месте. Не пропускайте платежи.',
-        btn_start: 'Начать бесплатно ✨',
-        btn_demo: 'Узнать больше →',
-        everything: '✨ Всё что вам нужно',
-        why_choose: 'Почему',
-        why_sub: 'Самый умный способ отслеживать все ваши банковские кредиты',
-        f1: 'AI Финансовый советник',
-        f2: 'Курсы валют онлайн',
-        f3: 'Просроченные платежи',
-        f4: 'Калькулятор кредита',
-        f1_badge: 'Работает на AI',
-        f2_badge: 'Живые данные',
-        f3_badge: 'Умные уведомления',
-        f4_badge: 'Мгновенный расчёт',
-        stat1: 'Пользователей в Таджикистане',
-        stat2: 'Бесплатно навсегда',
-        stat3: 'Кредитов отслежено',
-        card_holder: 'Владелец карты',
-        expires: 'Срок до',
-    }
-};
-
-function setLang(lang){
-    localStorage.setItem('lang',lang);
-    document.querySelectorAll('.lang-btn').forEach(btn=>{
-        btn.classList.toggle('active',btn.textContent.includes(lang.toUpperCase()));
-    });
-    const t = translations[lang];
-    document.querySelectorAll('[data-t]').forEach(el => {
-        const key = el.getAttribute('data-t');
-        if (t[key]) el.textContent = t[key];
-    });
-}
-const savedLang=localStorage.getItem('lang')||'en';
-setLang(savedLang);
-</script>
+    </section>
+</main>
 </body>
 </html>
