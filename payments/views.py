@@ -53,7 +53,16 @@ def payment_update(request, pk):
     if request.method == 'POST':
         form = PaymentForm(request.POST, instance=payment, user=request.user)
         if form.is_valid():
-            form.save()
+            payment=form.save()
+            
+            loan=payment.loan
+            
+            if loan.remaining_amount() <=0:
+                loan.status = 'closed'
+            else:
+                loan.status = 'active'
+            loan.save()
+            
             return redirect('payment_list')
     else:
         form = PaymentForm(instance=payment, user=request.user)
