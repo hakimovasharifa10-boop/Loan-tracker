@@ -6,6 +6,8 @@ from groq import Groq
 import requests
 import os
 from dotenv import load_dotenv
+from datetime import date
+
 
 load_dotenv()
 
@@ -152,6 +154,37 @@ def loan_delete(request, pk):
         return redirect('loan_list')
 
     return render(request, 'loans/loan_confirm_delete.html', {'loan': loan})
+
+
+@login_required
+def loan_schedule(request,pk):
+    loan=Loan.objects.filter(pk=pk,user=request.user).first()
+    if not loan:
+        return redirect('loan_list')
+    payments=loan.payments.all()
+    paid_months=[p.date.strftime('%Y-%m') for p in payments]
+    schedule=[]
+    current_date=loan.start_date
+    
+    while current_date<=loan.end_date:
+        month_key=current_date.strftime('%Y-%m')
+        
+        schedule.append({
+            'month':current_date.strftime('%B %Y'),
+            'amount':loan.monthly_payment,
+            'status':'paid' if month_key in paid_months else 'upcoming'
+        })
+        
+        if current_date.month == 12:
+            current_date = date(current_date.year + 1,1,current_date.day)
+        else:
+            current_date = date(current_date.year,current_date.month + 1,current_date.day)
+            
+    return render(request,'loans/loan_schedule.html',{
+        'loan':loan,
+        'schedule':schedule
+    })
+    
 
 
     

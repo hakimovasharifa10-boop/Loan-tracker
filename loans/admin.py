@@ -4,35 +4,28 @@ from .models import Loan
 
 @admin.register(Loan)
 class LoanAdmin(admin.ModelAdmin):
-    list_display  = ('bank_name', 'user', 'amount', 'interest_rate', 'monthly_payment', 'end_date', 'is_overdue','show_status')
-    list_filter   = ('bank_name', 'start_date')
+    list_display = (
+        'bank_name',
+        'user',
+        'amount',
+        'interest_rate',
+        'monthly_payment',
+        'end_date',
+        'is_overdue',
+        'show_status',
+    )
+
+    list_filter = ('bank_name', 'start_date')
     search_fields = ('bank_name', 'user__username', 'notes')
     date_hierarchy = 'start_date'
-    
-    fieldsets = (
-        ('User & Bank', {
-            'fields': ('user', 'bank_name', 'logo')
-        }),
-        ('Loan Details', {
-            'fields': ('amount', 'interest_rate', 'monthly_payment')
-        }),
-        ('Dates', {
-            'fields': ('start_date', 'end_date')
-        }),
-        ('Extra', {
-            'fields': ('notes',)
-        }),
-    )
-    
-    
-def show_status(self,obj):
-    status = obj.get_status()
-    
-    if status == 'closed':
-        return 'Closed'
-    elif status == 'overdue':
-        return 'Overdue'
-    return 'Active'
 
+    def show_status(self, obj):
+        status = obj.status_label
 
-show_status.short_description = 'Status'
+        if status == 'closed':
+            return 'Closed'
+        elif status == 'overdue':
+            return 'Overdue'
+        return 'Active'
+
+    show_status.short_description = 'Status'
