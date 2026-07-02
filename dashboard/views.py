@@ -187,3 +187,32 @@ def send_test_reminder(request):
     send_telegram_message(user.telegram_chat_id, message)
 
     return redirect('dashboard')
+
+
+@login_required
+def send_payment_reminder(request):
+    user = request.user
+
+    if not user.telegram_chat_id:
+        return redirect('profile')
+
+    loan = Loan.objects.filter(user=user).order_by('end_date').first()
+
+    if not loan:
+        return redirect('dashboard')
+
+    message = f"""
+🔔 Loan Tracker TJ
+
+Payment reminder!
+
+Bank: {loan.bank_name}
+Monthly payment: {loan.monthly_payment} TJS
+Payment date: {loan.end_date}
+
+Don't forget to pay on time.
+"""
+
+    send_telegram_message(user.telegram_chat_id, message)
+
+    return redirect('dashboard')
