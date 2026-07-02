@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponse
@@ -170,3 +170,20 @@ def download_report(request):
     p.save()
 
     return response
+
+
+@login_required
+def send_test_reminder(request):
+    user = request.user
+
+    if not user.telegram_chat_id:
+        return redirect('profile')
+
+    message = (
+        "🔔 Test reminder from Loan Tracker TJ\n\n"
+        "Your Telegram notifications are working!"
+    )
+
+    send_telegram_message(user.telegram_chat_id, message)
+
+    return redirect('dashboard')
