@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.http import HttpResponse
 from loans.models import Loan
 from payments.models import Payment
 from datetime import timedelta
+from reportlab.pdfgen import canvas
 import requests
 import json
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-
 
 
 def get_exchange_rates():
@@ -32,63 +31,69 @@ def dashboard_view(request):
     loans = Loan.objects.filter(user=request.user)
     payments = Payment.objects.filter(user=request.user)
     today = timezone.now().date()
-    total_debt  = sum(loan.remaining_amount() for loan in loans)
-    total_paid  = sum(p.amount for p in payments)
-    active_loans  = loans.count()
 
+    total_debt = sum(loan.remaining_amount() for loan in loans)
+    total_paid = sum(payment.amount for payment in payments)
+    active_loans = loans.count()
 
-    overdue_loans = [loan for loan in loans if loan.end_date < today]
+    overdue_loans = [loan for loan in loans if loan.status_label == 'overdue']
 
-    
     upcoming_loans = sorted(
-        [loan for loan in loans if loan.end_date >= today],
+        [loan for loan in loans if loan.status_label == 'active'],
         key=lambda x: x.end_date
     )
+
     next_payment = upcoming_loans[0] if upcoming_loans else None
 
+    days_until_payment = None
+    if next_payment:
+        days_until_payment = (next_payment.end_date - today).days
 
     recent_payments = payments[:5]
 
-
     months_labels = []
-    months_data   = []
+    months_data = []
+
     for i in range(5, -1, -1):
-        month_start = (today.replace(day=1) - timedelta(days=30*i))
-        month_name  = month_start.strftime('%b')
+        month_start = today.replace(day=1) - timedelta(days=30 * i)
+        month_name = month_start.strftime('%b')
+
         month_total = sum(
-            float(p.amount) for p in payments
-            if p.date.year == month_start.year and p.date.month == month_start.month
+            float(payment.amount) for payment in payments
+            if payment.date.year == month_start.year
+            and payment.date.month == month_start.month
         )
+
         months_labels.append(month_name)
         months_data.append(month_total)
 
-
     banks_labels = []
-    banks_data   = []
+    banks_data = []
+
     for loan in loans:
         banks_labels.append(loan.bank_name)
         banks_data.append(float(loan.remaining_amount()))
 
-
     rates = get_exchange_rates()
 
     return render(request, 'dashboard/dashboard.html', {
-        'loans':           loans,
-        'total_debt':      total_debt,
-        'total_paid':      total_paid,
-        'active_loans':    active_loans,
-        'overdue_loans':   overdue_loans,
-        'next_payment':    next_payment,
+        'loans': loans,
+        'total_debt': total_debt,
+        'total_paid': total_paid,
+        'active_loans': active_loans,
+        'overdue_loans': overdue_loans,
+        'next_payment': next_payment,
+        'days_until_payment': days_until_payment,
         'recent_payments': recent_payments,
-        'rates':           rates,
-        'today':           today,
-        'months_labels':   json.dumps(months_labels),
-        'months_data':     json.dumps(months_data),
-        'banks_labels':    json.dumps(banks_labels),
-        'banks_data':      json.dumps(banks_data),
+        'rates': rates,
+        'today': today,
+        'months_labels': json.dumps(months_labels),
+        'months_data': json.dumps(months_data),
+        'banks_labels': json.dumps(banks_labels),
+        'banks_data': json.dumps(banks_data),
     })
-    
-    
+
+
 @login_required
 def download_report(request):
     loans = Loan.objects.filter(user=request.user)
