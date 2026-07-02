@@ -14,17 +14,25 @@
     <div>
         <p class="eyebrow">Portfolio overview</p>
         <h1 class="page-title">Good day, {{ request.user.username }}</h1>
-        <p class="page-subtitle">Track your debt, payments, and upcoming obligations in one place.</p>
+        <p class="page-subtitle">
+            Track your debt, payments, and upcoming obligations in one place.
+        </p>
     </div>
 
     <div class="table-actions">
+
         <a href="{% url 'download_report' %}" class="btn btn-secondary">
             📄 Download PDF Report
+        </a>
+
+        <a href="{% url 'send_test_reminder' %}" class="btn btn-secondary">
+            📩 Send Test Telegram Message
         </a>
 
         <a href="/loans/create/" class="btn btn-primary">
             Add loan
         </a>
+
     </div>
 </section>
 
