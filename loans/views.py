@@ -35,7 +35,11 @@ def loan_list(request):
 
     
     ai_answer = None
-    question  = request.GET.get('ai_help', '').strip()
+    question = request.GET.get('ai_help', '').strip()
+
+    if request.GET.get('auto_ai'):
+        question = "Analyze my loans and tell me which loan I should pay first."
+
     if question:
         loans_for_ai = []
         for loan in loans:
