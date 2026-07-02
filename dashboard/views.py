@@ -8,6 +8,11 @@ from datetime import timedelta
 from reportlab.pdfgen import canvas
 import requests
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 
 def get_exchange_rates():
@@ -26,6 +31,27 @@ def get_exchange_rates():
         return {'USD': 0.092, 'RUB': 8.5, 'EUR': 0.085}
 
 
+
+def send_telegram_message(chat_id, text):
+    if not TELEGRAM_BOT_TOKEN or not chat_id:
+        return False
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+
+    try:
+        response = requests.post(
+            url,
+            data={
+                "chat_id": chat_id,
+                "text": text,
+            },
+            timeout=10
+        )
+        return response.status_code == 200
+    except:
+        return False
+    
+    
 @login_required
 def dashboard_view(request):
     loans = Loan.objects.filter(user=request.user)
