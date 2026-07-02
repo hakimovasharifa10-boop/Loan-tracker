@@ -59,10 +59,24 @@
         <div class="stat-sub">Recorded repayments</div>
     </div>
     <div class="stat-card stat-warning">
-        <div class="stat-label">Next payment</div>
-        <div class="stat-value">{% if next_payment %}{{ next_payment.end_date }}{% else %}-{% endif %}</div>
-        <div class="stat-sub">{% if next_payment %}{{ next_payment.bank_name }}{% else %}No scheduled payment{% endif %}</div>
+    <div class="stat-label">Next payment</div>
+
+    <div class="stat-value">
+        {% if next_payment %}
+            {{ days_until_payment }} days
+        {% else %}
+            -
+        {% endif %}
     </div>
+
+    <div class="stat-sub">
+        {% if next_payment %}
+            🔔 {{ next_payment.bank_name }} / {{ next_payment.monthly_payment }} TJS / {{ next_payment.end_date }}
+        {% else %}
+            No scheduled payment
+        {% endif %}
+    </div>
+</div>
     <div class="stat-card stat-info">
         <div class="stat-label">Active loans</div>
         <div class="stat-value">{{ active_loans }}</div>
