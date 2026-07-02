@@ -1,117 +1,211 @@
-{% extends 'base.html' %}
-{% block title %}My Profile — Loan Tracker TJ{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}My Profile — Loan Tracker TJ{%
+endblock %} {% block content %}
 
 <div class="page-header">
-    <h2 class="page-title">👤 My Profile</h2>
+  <h2 class="page-title">👤 My Profile</h2>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 2fr;gap:16px">
-
-    <!-- LEFT: Avatar card -->
-    <div class="card" style="text-align:center;padding:32px 20px">
-        <div style="position:relative;display:inline-block;margin-bottom:16px">
-            {% if request.user.avatar %}
-                <img src="{{ request.user.avatar.url }}"
-                     style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid rgba(139,92,246,0.5)">
-            {% else %}
-                <div style="width:90px;height:90px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:white;margin:0 auto;border:3px solid rgba(139,92,246,0.3)">
-                    {{ request.user.username|slice:":2"|upper }}
-                </div>
-            {% endif %}
-        </div>
-        <div style="color:#e2e8f0;font-size:16px;font-weight:600;margin-bottom:4px">
-            {{ request.user.first_name }} {{ request.user.last_name }}
-            {% if not request.user.first_name %}{{ request.user.username }}{% endif %}
-        </div>
-        <div style="color:#64748b;font-size:13px;margin-bottom:12px">{{ request.user.email }}</div>
-        <span class="badge badge-info">Client</span>
-
-        <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)">
-            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-                <span style="color:#64748b;font-size:12px">Total loans</span>
-                <span style="color:#a78bfa;font-weight:600">{{ request.user.loans.count }}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-                <span style="color:#64748b;font-size:12px">Total payments</span>
-                <span style="color:#34d399;font-weight:600">{{ request.user.payments.count }}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between">
-                <span style="color:#64748b;font-size:12px">Member since</span>
-                <span style="color:#94a3b8;font-size:12px">{{ request.user.date_joined|date:"M Y" }}</span>
-            </div>
-        </div>
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px">
+  <!-- LEFT: Avatar card -->
+  <div class="card" style="text-align: center; padding: 32px 20px">
+    <div style="position: relative; display: inline-block; margin-bottom: 16px">
+      {% if request.user.avatar %}
+      <img
+        src="{{ request.user.avatar.url }}"
+        style="
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid rgba(139, 92, 246, 0.5);
+        "
+      />
+      {% else %}
+      <div
+        style="
+          width: 90px;
+          height: 90px;
+          background: linear-gradient(135deg, #7c3aed, #db2777);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          font-weight: 700;
+          color: white;
+          margin: 0 auto;
+          border: 3px solid rgba(139, 92, 246, 0.3);
+        "
+      >
+        {{ request.user.username|slice:":2"|upper }}
+      </div>
+      {% endif %}
     </div>
+    <div
+      style="
+        color: #e2e8f0;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      "
+    >
+      {{ request.user.first_name }} {{ request.user.last_name }} {% if not
+      request.user.first_name %}{{ request.user.username }}{% endif %}
+    </div>
+    <div style="color: #64748b; font-size: 13px; margin-bottom: 12px">
+      {{ request.user.email }}
+    </div>
+    <span class="badge badge-info">Client</span>
 
-    <!-- RIGHT: Edit form -->
-    <div class="card">
-        <div class="card-title">Personal Information</div>
+    <div
+      style="
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      "
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        "
+      >
+        <span style="color: #64748b; font-size: 12px">Total loans</span>
+        <span style="color: #a78bfa; font-weight: 600"
+          >{{ request.user.loans.count }}</span
+        >
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        "
+      >
+        <span style="color: #64748b; font-size: 12px">Total payments</span>
+        <span style="color: #34d399; font-weight: 600"
+          >{{ request.user.payments.count }}</span
+        >
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <span style="color: #64748b; font-size: 12px">Member since</span>
+        <span style="color: #94a3b8; font-size: 12px"
+          >{{ request.user.date_joined|date:"M Y" }}</span
+        >
+      </div>
+    </div>
+  </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert-error" style="background:rgba(52,211,153,0.07);border-color:rgba(52,211,153,0.2);color:#34d399">
-                    ✅ {{ message }}
-                </div>
-            {% endfor %}
+  <!-- RIGHT: Edit form -->
+  <div class="card">
+    <div class="card-title">Personal Information</div>
+
+    {% if messages %} {% for message in messages %}
+    <div
+      class="alert-error"
+      style="
+        background: rgba(52, 211, 153, 0.07);
+        border-color: rgba(52, 211, 153, 0.2);
+        color: #34d399;
+      "
+    >
+      ✅ {{ message }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Telegram Chat ID</label>
+
+          <input
+            type="text"
+            name="telegram_chat_id"
+            class="form-input"
+            placeholder="123456789"
+            value="{{ request.user.telegram_chat_id }}"
+          />
+
+          <small style="color: #64748b">
+            Enter your Telegram Chat ID to receive payment reminders.
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input
+            type="text"
+            name="last_name"
+            class="form-input"
+            placeholder="Enter last name"
+            value="{{ request.user.last_name }}"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-input"
+            value="{{ request.user.email }}"
+            disabled
+            style="opacity: 0.5; cursor: not-allowed"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input
+            type="text"
+            name="phone"
+            class="form-input"
+            placeholder="+992 XX XXX XXXX"
+            value="{{ request.user.phone }}"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address</label>
+        <input
+          type="text"
+          name="address"
+          class="form-input"
+          placeholder="City, street, house"
+          value="{{ request.user.address }}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Profile Photo</label>
+        {% if request.user.avatar %}
+        <div style="margin-bottom: 8px">
+          <img
+            src="{{ request.user.avatar.url }}"
+            style="
+              width: 48px;
+              height: 48px;
+              border-radius: 50%;
+              object-fit: cover;
+            "
+          />
+        </div>
         {% endif %}
+        <input
+          type="file"
+          name="avatar"
+          class="form-input"
+          accept="image/*"
+          style="padding: 6px"
+        />
+      </div>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label">First Name</label>
-                    <input type="text" name="first_name" class="form-input"
-                           placeholder="Enter first name"
-                           value="{{ request.user.first_name }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" name="last_name" class="form-input"
-                           placeholder="Enter last name"
-                           value="{{ request.user.last_name }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input"
-                           value="{{ request.user.email }}" disabled
-                           style="opacity:0.5;cursor:not-allowed">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="text" name="phone" class="form-input"
-                           placeholder="+992 XX XXX XXXX"
-                           value="{{ request.user.phone }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Address</label>
-                <input type="text" name="address" class="form-input"
-                       placeholder="City, street, house"
-                       value="{{ request.user.address }}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Profile Photo</label>
-                {% if request.user.avatar %}
-                    <div style="margin-bottom:8px">
-                        <img src="{{ request.user.avatar.url }}"
-                             style="width:48px;height:48px;border-radius:50%;object-fit:cover">
-                    </div>
-                {% endif %}
-                <input type="file" name="avatar" class="form-input"
-                       accept="image/*" style="padding:6px">
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:8px">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="/dashboard/" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
-
+      <div style="display: flex; gap: 10px; margin-top: 8px">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/dashboard/" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
 
 {% endblock %}
