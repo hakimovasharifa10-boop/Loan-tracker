@@ -5,12 +5,12 @@ from .models import User, EmailConfirm
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display  = ('username', 'email', 'first_name', 'last_name', 'phone', 'is_active')
+    list_display  = ('username', 'email', 'first_name', 'last_name', 'phone', 'telegram_chat_id', 'is_active')
     list_filter   = ('is_active', 'is_staff')
     search_fields = ('username', 'email', 'phone')
     
     fieldsets = UserAdmin.fieldsets + (
-        ('Extra Info', {'fields': ('phone', 'address', 'avatar')}),
+       ('Extra Info', {'fields': ('phone', 'address', 'avatar', 'telegram_chat_id')}),
     )
 
 
