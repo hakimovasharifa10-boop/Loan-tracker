@@ -98,7 +98,7 @@ def download_report(request):
     total_paid=sum(payment.amount for payment in payments)
     
     response = HttpResponse(content_type='application/pdf')
-    response=['Content-Disposition'] = 'attachment; filename=loan_report_pdf'
+    response['Content-Disposition'] = 'attachment; filename=loan_report_pdf'
     
     p=canvas.Canvas(response)
     
