@@ -99,12 +99,18 @@ from django.contrib.auth.decorators import login_required
 def profile_view(request):
     if request.method == 'POST':
         user = request.user
+
         user.first_name = request.POST.get('first_name', '')
-        user.last_name  = request.POST.get('last_name', '')
-        user.phone      = request.POST.get('phone', '')
-        user.address    = request.POST.get('address', '')
+        user.last_name = request.POST.get('last_name', '')
+        user.phone = request.POST.get('phone', '')
+        user.address = request.POST.get('address', '')
+        user.telegram_chat_id = request.POST.get('telegram_chat_id', '')
+
         if request.FILES.get('avatar'):
             user.avatar = request.FILES.get('avatar')
+
         user.save()
+
         return redirect('profile')
+
     return render(request, 'accounts/profile.html')
