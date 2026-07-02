@@ -6,6 +6,9 @@ from payments.models import Payment
 from datetime import timedelta
 import requests
 import json
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+
 
 
 def get_exchange_rates():
@@ -84,4 +87,52 @@ def dashboard_view(request):
         'banks_labels':    json.dumps(banks_labels),
         'banks_data':      json.dumps(banks_data),
     })
-
+    
+    
+@login_required
+def download_report(request):
+    loans=Loan.objects.filter(user=request.user)
+    payments=Payment.objects.filter(user=request.user)
+    
+    total_debt=sum(loan.remaining_amount() for loan in loans)
+    total_paid=sum(payment.amount for payment in payments)
+    
+    response = HttpResponse(content_type='application/pdf')
+    response=['Content-Disposition'] = 'attachment; filename=loan_report_pdf'
+    
+    p=canvas.Canvas(response)
+    
+    p.setFont("Helvetica",12)
+    p.drawString(50,760,f"User:{request.user.username}")
+    p.drawString(50,740,f"Email:{request.user.email}")
+    p.drawString(50,710,f"Total debt:{total_debt} TJS")
+    p.drawString(50,760,f"Total paid:{total_paid} TJS")
+    
+    y=650
+    
+    p.setFont('Helvetica',11)
+    
+    for loan in loans:
+        p.drawString(50,y,f"Bank:{loan.bank_name}")
+        y=-20
+        p.drawString(70,y,f"Amount:{loan.amount} TJS")
+        y=-20
+        p.drawString(70,y,f"Rate:{loan.interest_rate} %")
+        y=-20
+        p.drawString(70,y,f"Monthly payment:{loan.monthly_payment} TJS")
+        y=-20
+        p.drawString(50,y,f"Remaining:{loan.remaining_amount()} TJS")
+        y=-30
+        
+        if y < 80:
+            p.showPage()
+            y=800
+            p.setFont("Helvetica",11)
+            
+    p.showPage()
+    p.save()
+    
+    return response
+        
+    
+    
