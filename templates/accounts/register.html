@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
-{% block title %}Register — Loan Tracker TJ{% endblock %}
+{% block title %}Register - Loan Tracker TJ{% endblock %}
 
 {% block content %}
-<div style="display:flex;align-items:center;justify-content:center;min-height:70vh">
-    <div class="card" style="max-width:420px;width:100%">
-
-        <div style="text-align:center;margin-bottom:24px">
-            <div style="width:52px;height:52px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px">🏦</div>
-            <h2 style="color:#e2e8f0;font-size:20px;font-weight:700;margin-bottom:4px" data-t="reg_title">Create account</h2>
-            <p style="color:#475569;font-size:13px" data-t="reg_sub">Join Loan Tracker TJ today</p>
+<div class="auth-shell">
+    <div class="card auth-card">
+        <div class="auth-head">
+            <div class="auth-mark">LT</div>
+            <h2 class="auth-title" data-t="reg_title">Create account</h2>
+            <p class="auth-sub" data-t="reg_sub">Join Loan Tracker TJ today</p>
         </div>
 
         {% if error %}
-            <div class="alert-error">⚠️ {{ error }}</div>
+            <div class="alert-error">{{ error }}</div>
         {% endif %}
 
         <form method="post">
@@ -33,14 +32,12 @@
                 <label class="form-label" data-t="label_confirm">Confirm password</label>
                 <input type="password" name="password2" class="form-input" placeholder="Repeat password">
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:4px" data-t="btn_register">
-                Sign up
-            </button>
+            <button type="submit" class="btn btn-primary auth-submit" data-t="btn_register">Sign up</button>
         </form>
 
-        <p style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
+        <p class="auth-foot">
             Already have account?
-            <a href="/accounts/login/" style="color:#a78bfa" data-t="link_login">Log in</a>
+            <a href="/accounts/login/" data-t="link_login">Log in</a>
         </p>
     </div>
 </div>

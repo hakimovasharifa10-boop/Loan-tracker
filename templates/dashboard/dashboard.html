@@ -22,15 +22,15 @@
 <div class="table-actions">
 
     <a href="{% url 'download_report' %}" class="btn btn-secondary">
-        📄 Download PDF Report
+        Download PDF Report
     </a>
 
     <a href="{% url 'send_test_reminder' %}" class="btn btn-secondary">
-        📩 Test Telegram
+        Test Telegram
     </a>
 
     <a href="{% url 'send_payment_reminder' %}" class="btn btn-warning">
-        🔔 Payment Reminder
+        Payment Reminder
     </a>
 
     <a href="/loans/create/" class="btn btn-primary">
@@ -83,7 +83,7 @@
 
     <div class="stat-sub">
         {% if next_payment %}
-            🔔 {{ next_payment.bank_name }} / {{ next_payment.monthly_payment }} TJS / {{ next_payment.end_date }}
+            {{ next_payment.bank_name }} / {{ next_payment.monthly_payment }} TJS / {{ next_payment.end_date }}
         {% else %}
             No scheduled payment
         {% endif %}

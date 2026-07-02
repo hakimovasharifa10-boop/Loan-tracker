@@ -1,50 +1,35 @@
 {% extends 'base.html' %}
-{% block title %}Delete Loan — Loan Tracker TJ{% endblock %}
+{% block title %}Delete Loan - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
 <div class="delete-wrap">
     <div class="delete-card">
+        <h2>Delete Loan?</h2>
+        <p>Are you sure you want to delete this loan?</p>
 
-        <div style="font-size:48px;margin-bottom:16px">🗑️</div>
-
-        <h2 style="color:#e2e8f0;font-size:18px;font-weight:600;margin-bottom:8px">
-            Delete Loan?
-        </h2>
-
-        <p style="color:#64748b;font-size:13px;margin-bottom:16px">
-            Are you sure you want to delete this loan?
-        </p>
-
-        <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:14px;margin-bottom:24px">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div class="danger-summary">
+            <div class="entity">
                 {% if loan.logo %}
-                    <img src="{{ loan.logo.url }}" style="width:32px;height:32px;border-radius:8px;object-fit:cover">
+                    <img src="{{ loan.logo.url }}" class="entity-logo" alt="{{ loan.bank_name }}">
                 {% else %}
-                    <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">
-                        {{ loan.bank_name|slice:":2"|upper }}
-                    </div>
+                    <div class="entity-logo entity-logo-fallback">{{ loan.bank_name|slice:":2"|upper }}</div>
                 {% endif %}
                 <div>
-                    <div style="color:#fca5a5;font-size:14px;font-weight:600">{{ loan.bank_name }}</div>
-                    <div style="color:#f87171;font-size:12px">{{ loan.amount }} TJS · {{ loan.interest_rate }}%</div>
+                    <div class="entity-name">{{ loan.bank_name }}</div>
+                    <div class="entity-meta">{{ loan.amount }} TJS / {{ loan.interest_rate }}%</div>
                 </div>
             </div>
-            <div style="font-size:12px;color:#f87171">
-                ⚠️ All payments for this loan will also be deleted!
-            </div>
+            <p class="danger-note">All payments for this loan will also be deleted.</p>
         </div>
 
         <form method="post">
             {% csrf_token %}
-            <div style="display:flex;gap:10px;justify-content:center">
-                <button type="submit" class="btn btn-danger">
-                    Yes, delete
-                </button>
+            <div class="form-actions delete-actions">
+                <button type="submit" class="btn btn-danger">Yes, delete</button>
                 <a href="/loans/" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
-
     </div>
 </div>
 

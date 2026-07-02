@@ -11,7 +11,7 @@
     <p class="page-subtitle">Monthly repayment plan for this loan.</p>
   </div>
 
-  <a href="{% url 'loan_list' %}" class="btn btn-secondary">← Back</a>
+  <a href="{% url 'loan_list' %}" class="btn btn-secondary">Back</a>
 </section>
 
 <div class="loan-table-card card">
@@ -31,9 +31,9 @@
         <td>{{ item.amount }} TJS</td>
         <td>
           {% if item.status == 'paid' %}
-          <span class="badge badge-success">✅ Paid</span>
+          <span class="badge badge-success">Paid</span>
           {% else %}
-          <span class="badge badge-warning">⏳ Upcoming</span>
+          <span class="badge badge-warning">Upcoming</span>
           {% endif %}
         </td>
       </tr>

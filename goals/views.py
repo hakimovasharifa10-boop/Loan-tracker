@@ -32,7 +32,6 @@ def ask_groq(question):
     except Exception as e:
         return f'AI unavailable: {str(e)[:50]}'
 
-
 @login_required
 def goal_list(request):
     goals = Goal.objects.filter(user=request.user)
@@ -40,10 +39,47 @@ def goal_list(request):
 
     if request.GET.get('ai_help'):
         question = request.GET.get('ai_help')
-        ai_answer = ask_groq(question)
+
+        income = request.user.monthly_income or 0
+
+        goals_text = []
+
+        for goal in goals:
+            goals_text.append(
+                f"""
+Goal: {goal.title}
+Target amount: {goal.target_amount} TJS
+Current amount: {goal.current_amount} TJS
+Remaining: {goal.remaining_amount()} TJS
+Target date: {goal.target_date}
+"""
+            )
+
+        goals_info = "\n".join(goals_text)
+
+        full_question = f"""
+You are a financial advisor from Tajikistan.
+
+User monthly income: {income} TJS
+
+User goals:
+{goals_info}
+
+Question:
+{question}
+
+Rules:
+- Use the user's real monthly income.
+- Never say "save 20% of your salary" if the salary is unknown.
+- Calculate how much money per month the user should save.
+- Give short practical advice in Russian.
+- Maximum 3 sentences.
+"""
+
+        ai_answer = ask_groq(full_question)
 
     return render(request, 'goals/goal_list.html', {
-        'goals':     goals,
+        'goals': goals,
         'ai_answer': ai_answer,
     })
 

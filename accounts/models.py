@@ -7,6 +7,13 @@ class User(AbstractUser):
     address = models.CharField(max_length=300, null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     telegram_chat_id = models.CharField(max_length=50, null=True, blank=True)
+    monthly_income = models.DecimalField(
+    max_digits=12,
+    decimal_places=2,
+    null=True,
+    blank=True,
+    default=0
+)
 
     def __str__(self):
         return self.username

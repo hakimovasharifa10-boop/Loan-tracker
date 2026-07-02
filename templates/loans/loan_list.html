@@ -28,7 +28,7 @@
 
   <div class="table-actions">
     <a href="?auto_ai=1" class="btn btn-secondary">
-      🤖 Analyze my loans
+      Analyze my loans
     </a>
 
     <a href="/loans/create/" class="btn btn-primary">
@@ -103,11 +103,11 @@
 
         <td>
           {% if loan.status_label == 'closed' %}
-          <span class="badge badge-primary">✅ Closed</span>
+          <span class="badge badge-primary">Closed</span>
           {% elif loan.status_label == 'overdue' %}
-          <span class="badge badge-danger">❌ Overdue</span>
+          <span class="badge badge-danger">Overdue</span>
           {% else %}
-          <span class="badge badge-success">🟢 Active</span>
+          <span class="badge badge-success">Active</span>
           {% endif %}
         </td>
 

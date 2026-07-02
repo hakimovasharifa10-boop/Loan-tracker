@@ -1,44 +1,40 @@
 {% extends 'base.html' %}
-{% block title %}Confirm Email — Loan Tracker TJ{% endblock %}
+{% block title %}Confirm Email - Loan Tracker TJ{% endblock %}
 
 {% block content %}
-<div style="display:flex;align-items:center;justify-content:center;min-height:70vh">
-    <div class="card" style="max-width:420px;width:100%">
-
-        <div style="text-align:center;margin-bottom:24px">
-            <div style="font-size:48px;margin-bottom:12px">✉️</div>
-            <h2 style="color:#e2e8f0;font-size:20px;font-weight:700;margin-bottom:4px">Check your email</h2>
-            <p style="color:#475569;font-size:13px">We sent a 6-digit code to your email</p>
+<div class="auth-shell">
+    <div class="card auth-card">
+        <div class="auth-head">
+            <div class="auth-mark">LT</div>
+            <h2 class="auth-title">Check your email</h2>
+            <p class="auth-sub">We sent a 6-digit code to your email.</p>
         </div>
 
         {% if error %}
-            <div class="alert-error">⚠️ {{ error }}</div>
+            <div class="alert-error">{{ error }}</div>
         {% endif %}
 
-        <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.15);border-radius:10px;padding:10px 14px;color:#34d399;font-size:12px;margin-bottom:16px">
-            ✅ Code sent to {{ user.email }}
+        <div class="ai-answer">
+            <strong>Code sent</strong>
+            <span>{{ user.email }}</span>
         </div>
 
         <form method="post" action="/accounts/confirm-email/">
             {% csrf_token %}
             <div class="form-group">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-input"
-                       placeholder="Enter your email" value="{{ user.email }}">
+                <input type="email" name="email" class="form-input" placeholder="Enter your email" value="{{ user.email }}">
             </div>
             <div class="form-group">
                 <label class="form-label">Confirmation code</label>
-                <input type="text" name="code" class="form-input"
-                       placeholder="Enter 6-digit code" maxlength="6">
+                <input type="text" name="code" class="form-input" placeholder="Enter 6-digit code" maxlength="6">
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:4px">
-                Confirm →
-            </button>
+            <button type="submit" class="btn btn-primary auth-submit">Confirm</button>
         </form>
 
-        <p style="text-align:center;margin-top:16px;font-size:13px;color:#475569">
+        <p class="auth-foot">
             Wrong email?
-            <a href="/accounts/register/" style="color:#a78bfa">Go back</a>
+            <a href="/accounts/register/">Go back</a>
         </p>
     </div>
 </div>

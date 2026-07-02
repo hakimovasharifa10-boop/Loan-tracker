@@ -1,0 +1,82 @@
+Watching for file changes with StatReloader
+[02/Jul/2026 23:57:11] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:11,211] - Broken pipe from ('127.0.0.1', 61801)
+[02/Jul/2026 23:57:24] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:25] "GET /static/style.css HTTP/1.1" 200 41737
+Not Found: /favicon.ico
+[02/Jul/2026 23:57:25] "GET /favicon.ico HTTP/1.1" 404 3461
+[02/Jul/2026 23:57:31] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:40] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:40] "GET /static/style.css HTTP/1.1" 200 41737
+Not Found: /favicon.ico
+[02/Jul/2026 23:57:40] "GET /favicon.ico HTTP/1.1" 404 3461
+[02/Jul/2026 23:57:51] "GET /dashboard/ HTTP/1.1" 302 0
+[02/Jul/2026 23:57:51] "GET /accounts/login?next=/dashboard/ HTTP/1.1" 301 0
+[02/Jul/2026 23:57:51] "GET /accounts/login/?next=/dashboard/ HTTP/1.1" 200 2202
+[02/Jul/2026 23:57:54] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:55] "GET /loans/ HTTP/1.1" 302 0
+[02/Jul/2026 23:57:55] "GET /accounts/login?next=/loans/ HTTP/1.1" 301 0
+[02/Jul/2026 23:57:55] "GET /accounts/login/?next=/loans/ HTTP/1.1" 200 2202
+[02/Jul/2026 23:57:57] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:57:58] "GET /payments/ HTTP/1.1" 302 0
+[02/Jul/2026 23:57:58] "GET /accounts/login?next=/payments/ HTTP/1.1" 301 0
+[02/Jul/2026 23:57:58] "GET /accounts/login/?next=/payments/ HTTP/1.1" 200 2202
+[02/Jul/2026 23:58:00] "GET / HTTP/1.1" 200 5730
+[02/Jul/2026 23:58:23] "GET /accounts/login/ HTTP/1.1" 200 2202
+[02/Jul/2026 23:58:23] "GET /static/style.css HTTP/1.1" 304 0
+[02/Jul/2026 23:58:32] "POST /accounts/login/ HTTP/1.1" 302 0
+[02/Jul/2026 23:58:34] "GET /dashboard/ HTTP/1.1" 200 11681
+[02/Jul/2026 23:58:34] "GET /media/bank_logos/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-26_162855.png HTTP/1.1" 200 22045
+[02/Jul/2026 23:58:34] "GET /media/bank_logos/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-26_162522.png HTTP/1.1" 200 55196
+[02/Jul/2026 23:58:34] "GET /media/avatars/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_2026-06-26_170622.png HTTP/1.1" 200 625988
+[02/Jul/2026 23:58:47,689] - Broken pipe from ('127.0.0.1', 55079)
+[02/Jul/2026 23:58:49] "GET /loans/ HTTP/1.1" 200 9292
+[02/Jul/2026 23:58:49] "GET /static/style.css HTTP/1.1" 304 0
+[02/Jul/2026 23:58:54] "GET /payments/ HTTP/1.1" 200 8838
+[02/Jul/2026 23:58:57] "GET /calculator/ HTTP/1.1" 200 9241
+[02/Jul/2026 23:58:59] "GET /goals/ HTTP/1.1" 200 8209
+[02/Jul/2026 23:59:04] "GET /goals/create/ HTTP/1.1" 200 7673
+[02/Jul/2026 23:59:10] "GET /accounts/profile/ HTTP/1.1" 200 5042
+[02/Jul/2026 23:59:17] "GET /dashboard/ HTTP/1.1" 200 11681
+[02/Jul/2026 23:59:17] "GET /static/style.css HTTP/1.1" 304 0
+[02/Jul/2026 23:59:23] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:01:31] "GET /dashboard/ HTTP/1.1" 200 11681
+[03/Jul/2026 00:01:31] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:02:02] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:02:02,178] - Broken pipe from ('127.0.0.1', 56091)
+[03/Jul/2026 00:02:16] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:02:16] "GET /static/style.css HTTP/1.1" 200 45269
+[03/Jul/2026 00:02:29] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:02:29] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:02:37] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:02:37] "GET /static/style.css HTTP/1.1" 200 45269
+[03/Jul/2026 00:02:44] "GET /dashboard/ HTTP/1.1" 200 11681
+[03/Jul/2026 00:02:44] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:02:50] "GET /loans/ HTTP/1.1" 200 9292
+[03/Jul/2026 00:02:50] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:02:56] "GET /loans/6/schedule/ HTTP/1.1" 200 2782
+[03/Jul/2026 00:02:56] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:03:00] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:03:18] "GET /calculator/ HTTP/1.1" 200 9241
+[03/Jul/2026 00:03:18] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:03:20] "GET /accounts/profile/ HTTP/1.1" 200 5042
+[03/Jul/2026 00:03:24] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:05:35] "GET /dashboard/ HTTP/1.1" 200 11681
+[03/Jul/2026 00:05:35] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:06:08] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:06:08] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:06:14] "GET /dashboard/ HTTP/1.1" 200 11681
+[03/Jul/2026 00:06:20] "GET /loans/ HTTP/1.1" 200 9292
+[03/Jul/2026 00:06:23] "GET /payments/ HTTP/1.1" 200 8838
+[03/Jul/2026 00:06:26] "GET /calculator/ HTTP/1.1" 200 9241
+[03/Jul/2026 00:06:30] "GET /goals/ HTTP/1.1" 200 8209
+[03/Jul/2026 00:06:34] "GET /goals/ HTTP/1.1" 200 8209
+[03/Jul/2026 00:06:34] "GET /static/style.css HTTP/1.1" 304 0
+[03/Jul/2026 00:06:40] "GET /goals/create/ HTTP/1.1" 200 7673
+[03/Jul/2026 00:06:54] "GET /accounts/logout/ HTTP/1.1" 302 0
+[03/Jul/2026 00:06:54] "GET /accounts/login/ HTTP/1.1" 200 2202
+[03/Jul/2026 00:06:59] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:07:33] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:07:33,876] - Broken pipe from ('127.0.0.1', 64475)
+[03/Jul/2026 00:08:06] "GET / HTTP/1.1" 200 5730
+[03/Jul/2026 00:08:06,813] - Broken pipe from ('127.0.0.1', 64229)

@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from random import randint
 from .models import EmailConfirm
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -93,7 +94,6 @@ def logout_view(request):
     return redirect('login')
 
 
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def profile_view(request):
@@ -105,6 +105,10 @@ def profile_view(request):
         user.phone = request.POST.get('phone', '')
         user.address = request.POST.get('address', '')
         user.telegram_chat_id = request.POST.get('telegram_chat_id', '')
+
+        monthly_income = request.POST.get('monthly_income')
+        if monthly_income:
+            user.monthly_income = monthly_income
 
         if request.FILES.get('avatar'):
             user.avatar = request.FILES.get('avatar')

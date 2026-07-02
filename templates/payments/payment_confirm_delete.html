@@ -1,52 +1,34 @@
 {% extends 'base.html' %}
-{% block title %}Delete Payment — Loan Tracker TJ{% endblock %}
+{% block title %}Delete Payment - Loan Tracker TJ{% endblock %}
 
 {% block content %}
 
 <div class="delete-wrap">
     <div class="delete-card">
+        <h2>Delete Payment?</h2>
+        <p>Are you sure you want to delete this payment?</p>
 
-        <div style="font-size:48px;margin-bottom:16px">🗑️</div>
-
-        <h2 style="color:#e2e8f0;font-size:18px;font-weight:600;margin-bottom:8px">
-            Delete Payment?
-        </h2>
-
-        <p style="color:#64748b;font-size:13px;margin-bottom:16px">
-            Are you sure you want to delete this payment?
-        </p>
-
-        <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:14px;margin-bottom:24px">
-            <div style="display:flex;align-items:center;gap:10px">
+        <div class="danger-summary">
+            <div class="entity">
                 {% if payment.loan.logo %}
-                    <img src="{{ payment.loan.logo.url }}"
-                         style="width:32px;height:32px;border-radius:8px;object-fit:cover">
+                    <img src="{{ payment.loan.logo.url }}" class="entity-logo" alt="{{ payment.loan.bank_name }}">
                 {% else %}
-                    <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">
-                        {{ payment.loan.bank_name|slice:":2"|upper }}
-                    </div>
+                    <div class="entity-logo entity-logo-fallback">{{ payment.loan.bank_name|slice:":2"|upper }}</div>
                 {% endif %}
                 <div>
-                    <div style="color:#fca5a5;font-size:14px;font-weight:600">
-                        {{ payment.loan.bank_name }}
-                    </div>
-                    <div style="color:#f87171;font-size:12px">
-                        {{ payment.amount }} TJS · {{ payment.date }}
-                    </div>
+                    <div class="entity-name">{{ payment.loan.bank_name }}</div>
+                    <div class="entity-meta">{{ payment.amount }} TJS / {{ payment.date }}</div>
                 </div>
             </div>
         </div>
 
         <form method="post">
             {% csrf_token %}
-            <div style="display:flex;gap:10px;justify-content:center">
-                <button type="submit" class="btn btn-danger">
-                    Yes, delete
-                </button>
+            <div class="form-actions delete-actions">
+                <button type="submit" class="btn btn-danger">Yes, delete</button>
                 <a href="/payments/" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
-
     </div>
 </div>
 
