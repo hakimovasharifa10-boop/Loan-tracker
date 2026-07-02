@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% block title %} {{ loan.bank_name }} Schedule {%
-endblock %} {% block content %}
+{% extends 'base.html' %}
+
+{% block title %}{{ loan.bank_name }} Schedule{% endblock %}
+
+{% block content %}
 
 <section class="page-hero">
   <div>
@@ -8,7 +11,7 @@ endblock %} {% block content %}
     <p class="page-subtitle">Monthly repayment plan for this loan.</p>
   </div>
 
-  <a href="{% url 'loan_list' %}" class="btn btn-secondary"> ← Back </a>
+  <a href="{% url 'loan_list' %}" class="btn btn-secondary">← Back</a>
 </section>
 
 <div class="loan-table-card card">
@@ -25,14 +28,12 @@ endblock %} {% block content %}
       {% for item in schedule %}
       <tr>
         <td>{{ item.month }}</td>
-
         <td>{{ item.amount }} TJS</td>
-
         <td>
           {% if item.status == 'paid' %}
-          <span class="badge badge-success"> ✅ Paid </span>
+          <span class="badge badge-success">✅ Paid</span>
           {% else %}
-          <span class="badge badge-warning"> ⏳ Upcoming </span>
+          <span class="badge badge-warning">⏳ Upcoming</span>
           {% endif %}
         </td>
       </tr>
